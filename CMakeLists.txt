@@ -9,7 +9,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 file(GLOB EN61_SOURCES
 	"core/*.cpp"
 	"core/*/*.cpp"
-	"thirdparty/*/*.cpp"
 )
 
 set(EN61_INCLUDE_DIRS
@@ -27,8 +26,12 @@ else()
 	message(STATUS "Building static library...")
 endif(DYNAMIC)
 
-find_package(glfw3 3.3 REQUIRED)
-target_link_libraries(en61 glfw)
+add_subdirectory(thirdparty/glfw/)
+add_subdirectory(thirdparty/glad/)
+add_subdirectory(thirdparty/stb/)
+add_subdirectory(thirdparty/glm/)
+
+target_link_libraries(en61 glfw glad stb glm)
 
 target_include_directories(en61 PUBLIC ${EN61_INCLUDE_DIRS})
 

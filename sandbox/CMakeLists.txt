@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.9)
 project(sandbox VERSION 0.1)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(EN61_OUTPUT_FOLDER "en61_lib/")
 file(GLOB SANDBOX_SOURCES "*.cpp")
 

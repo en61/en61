@@ -22,6 +22,4 @@ protected:
 	std::string _basepath;
 };
 
-std::string locate_file(const std::string &file);
-
 } // namespace en61

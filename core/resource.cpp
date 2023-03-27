@@ -18,9 +18,4 @@ void ResourceManager::set_base_path(const std::string &path) {
 	_basepath = path;
 }
 
-std::string locate_file(const std::string &file) {
-	return Application::get()->resource_manager()->locate_file(file);
-}
-
-
 } // namespace en61

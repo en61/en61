@@ -8,7 +8,7 @@ namespace en61 {
 
 Application *Application::_instance{nullptr}; 
 
-Application::Application(const ApplicationProps &props) : _properties(props) {
+Application::Application(const WindowProps &win_props) {
 
 	assert((!_instance && "Application already launched!"));
 	_instance = this;
@@ -23,9 +23,7 @@ Application::Application(const ApplicationProps &props) : _properties(props) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	_rmanager = ResourceManager::create(_properties.working_dir);
-
-	_window = Window::create(WindowProps(_properties.title));
+	_window = Window::create(win_props);
 	_window->make_current_context();
 
 	gladLoadGL();

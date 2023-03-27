@@ -120,16 +120,16 @@ void Shader::compile_shaders() {
 
 
 void Shader::load(const std::string &vpath, const std::string &fpath) {
-	_shaders.emplace_back(locate_file(vpath), GL_VERTEX_SHADER);
-	_shaders.emplace_back(locate_file(fpath), GL_FRAGMENT_SHADER);
+	_shaders.emplace_back(vpath, GL_VERTEX_SHADER);
+	_shaders.emplace_back(fpath, GL_FRAGMENT_SHADER);
 
 	create_shaders(); 
 	compile_shaders();	
 }
 void Shader::load(const std::string &vpath, const std::string &fpath, const std::string &gpath) {
-	_shaders.emplace_back(locate_file(vpath), GL_VERTEX_SHADER);
-	_shaders.emplace_back(locate_file(gpath), GL_GEOMETRY_SHADER);
-	_shaders.emplace_back(locate_file(fpath), GL_FRAGMENT_SHADER);
+	_shaders.emplace_back(vpath, GL_VERTEX_SHADER);
+	_shaders.emplace_back(gpath, GL_GEOMETRY_SHADER);
+	_shaders.emplace_back(fpath, GL_FRAGMENT_SHADER);
 
 	create_shaders(); 
 	compile_shaders();	

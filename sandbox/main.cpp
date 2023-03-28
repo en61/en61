@@ -12,7 +12,7 @@ public:
     Sandbox(const WindowProps &props)
         : Application(props), _camera(_window) {
         
-            enable_depth_testing();
+        enable_depth_testing();
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glEnable(GL_BLEND);

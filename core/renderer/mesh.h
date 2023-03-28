@@ -9,7 +9,12 @@
 
 namespace en61 {
 
-class Mesh {
+class IMesh {
+public:
+	virtual void draw() = 0;
+};
+
+class Mesh: public IMesh {
 public:
 	Mesh() = default;
 

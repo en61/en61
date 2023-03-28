@@ -21,7 +21,7 @@ void Object::render(const glm::mat4 &model, const glm::mat4 &view, const glm::ma
 	    _mesh->draw();
 }
 
-void Object::set_mesh(std::shared_ptr<Mesh> mesh) {
+void Object::set_mesh(std::shared_ptr<IMesh> mesh) {
 	_mesh = mesh;
 }
 

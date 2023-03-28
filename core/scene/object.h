@@ -16,13 +16,13 @@ public:
 	virtual void render(const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection);
 
 	void add_texture(std::shared_ptr<Texture> texture);
-	void set_mesh(std::shared_ptr<Mesh> mesh);
+	void set_mesh(std::shared_ptr<IMesh> mesh);
 	void set_shader(std::shared_ptr<Shader> shader);
 
 protected:
 	std::vector<std::shared_ptr<Texture>> _textures;
 	std::shared_ptr<Shader> _shader;
-	std::shared_ptr<Mesh> _mesh;
+	std::shared_ptr<IMesh> _mesh;
 };
 
 } // namespace en61

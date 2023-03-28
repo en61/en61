@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <unistd.h>
+#include <utility>
 
 namespace en61 {
 
@@ -40,6 +41,11 @@ Application::~Application() {
 
 void Application::clear() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+std::pair<int, int> Application::get_monitor_resolution() {
+    const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    return std::make_pair(mode->width, mode->height);
 }
 
 void Application::render() {

@@ -16,7 +16,9 @@ Camera::Camera(std::shared_ptr<Window> window, glm::vec3 position, float fov)
 		_prevtime = glfwGetTime();
 
 		window->scroll_callbacks += [this](double xoffset, double yoffset) {
-			this->_fov -= yoffset * 5;
+			float new_fov = this->_fov - yoffset * 5;
+			if (new_fov > 0 && new_fov < 180)
+			    this->_fov = new_fov;
 		};
 
 	}

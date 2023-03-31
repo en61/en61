@@ -11,26 +11,26 @@ VertexBuffer::~VertexBuffer() {
 	glDeleteBuffers(1, &_id);
 }
 
-void VertexBuffer::bind() {
+void VertexBuffer::Bind() {
 	glBindBuffer(_type, _id);
 }
 
-void VertexBuffer::unbind() {
+void VertexBuffer::Unbind() {
 	glBindBuffer(_type, 0);
 }
 
-void VertexBuffer::set(GLsizeiptr size, const GLvoid *data, GLenum usage) {
-	this->bind();
+void VertexBuffer::Set(GLsizeiptr size, const GLvoid *data, GLenum usage) {
+	this->Bind();
 	glBufferData(_type, size, data, usage);
 }
 
-void VertexBuffer::enable_attribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *data) {
-	this->bind();
+void VertexBuffer::EnableAttribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *data) {
+	this->Bind();
 	glVertexAttribPointer(index, size, type, normalized, stride, data);
 	glEnableVertexAttribArray(index);
 }
 
-void VertexBuffer::disable_attribute(GLuint index) {
+void VertexBuffer::DisableAttribute(GLuint index) {
 	glDisableVertexAttribArray(index);
 }
 

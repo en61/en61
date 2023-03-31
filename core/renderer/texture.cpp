@@ -8,7 +8,7 @@
 
 namespace en61 {
 
-void Texture::load(const std::string &path, size_t slot) {
+void Texture::Load(const std::string &path, size_t slot) {
 	int width, height, channels;
 	stbi_uc *data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 	if (!data) {
@@ -35,7 +35,7 @@ void Texture::load(const std::string &path, size_t slot) {
 	stbi_image_free(data);
 }
 
-void Texture::bind(size_t slot) {
+void Texture::Bind(size_t slot) {
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(_type, _id);
 }

@@ -9,11 +9,11 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	void bind();
-	void unbind();
+	void Bind();
+	void Unbind();
 
-	void draw_triangles(size_t count);
-	void draw_points(size_t count);
+	void DrawTriangles(size_t count);
+	void DrawPoints(size_t count);
 
 protected:
 	GLuint _id;

@@ -9,13 +9,13 @@ namespace en61 {
 
 class ResourceManager {
 public:
-	ResourceManager(const std::string &working_dir);
+	ResourceManager(const std::string &workingDir);
 
-	std::string locate_file(const std::string &file);
-	void set_base_path(const std::string &path);
+	std::string LocateFile(const std::string &file);
+	void SetBasePath(const std::string &path);
 
-	static std::shared_ptr<ResourceManager> create(const std::string &working_dir) {
-		return std::make_shared<ResourceManager>(working_dir);
+	static std::shared_ptr<ResourceManager> Create(const std::string &workingDir) {
+		return std::make_shared<ResourceManager>(workingDir);
 	}
 
 protected:

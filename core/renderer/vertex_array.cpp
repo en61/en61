@@ -5,28 +5,28 @@ namespace en61 {
 VertexArray::VertexArray()
 	: _id(0) {
 	glGenVertexArrays(1, &_id);
-	bind();
+    Bind();
 }
 
 VertexArray::~VertexArray() {
 	glDeleteVertexArrays(1, &_id);
 }
 
-void VertexArray::bind() {
+void VertexArray::Bind() {
 	glBindVertexArray(_id);
 }
 
-void VertexArray::unbind() {
+void VertexArray::Unbind() {
 	glBindVertexArray(0);
 }
 
-void VertexArray::draw_triangles(size_t count) {
-	this->bind();
+void VertexArray::DrawTriangles(size_t count) {
+	this->Bind();
 	glDrawArrays(GL_TRIANGLES, 0, count);
 }
 
-void VertexArray::draw_points(size_t count) {
-	this->bind();
+void VertexArray::DrawPoints(size_t count) {
+	this->Bind();
 	glDrawArrays(GL_POINTS, 0, count);
 }
 

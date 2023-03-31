@@ -11,7 +11,7 @@ class Cloud: public Object {
 public:
 	Cloud();
 
-	void render(const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &proj) override;
+	void Render(const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &proj) override;
 
 protected:
 	std::shared_ptr<CloudMesh> _mesh;

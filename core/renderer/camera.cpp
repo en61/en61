@@ -1,3 +1,4 @@
+#include "core/controls.h"
 #include <core/renderer/camera.h>
 
 #include <core/common.h>
@@ -12,7 +13,7 @@ namespace en61 {
 
 Camera::Camera(std::shared_ptr<Window> window, glm::vec3 position, float fov)
 	: _window(window), _position(position), _fov(fov) {
-		_ratio = _window->ratio();
+		_ratio = _window->Ratio();
 		_prevtime = glfwGetTime();
 
 		window->scroll_callbacks += [this](double xoffset, double yoffset) {
@@ -23,35 +24,35 @@ Camera::Camera(std::shared_ptr<Window> window, glm::vec3 position, float fov)
 
 	}
 
-glm::mat4 Camera::get_view() const {
+glm::mat4 Camera::GetView() const {
 	return glm::lookAt(_position, _target, _up);
 }
 
-glm::mat4 Camera::get_model() const {
+glm::mat4 Camera::GetModel() const {
 	return glm::mat4(1.0f);
 }
 
-glm::mat4 Camera::get_projection() const {
+glm::mat4 Camera::GetProjection() const {
 	static constexpr float znear = 0.1f;
 	static constexpr float zfar = 100.f;
 
 	return glm::perspective(glm::radians(_fov), _ratio, znear, zfar);
 }
 
-glm::mat4 Camera::get_mvp() const {
-	return get_projection() * get_view() * get_model();
+glm::mat4 Camera::GetMVP() const {
+	return GetProjection() * GetView() * GetModel();
 }
 
-void Camera::update() {
+void Camera::Update() {
 	double current_time = glfwGetTime();
 	float frame_time = current_time - _prevtime;
 	float speed = 0.001f;
 
-	double width = _window->width();
-	double height = _window->height();
+	double width = _window->Width();
+	double height = _window->Height();
 
-	auto [xpos, ypos] = mouse_position();
-	set_mouse_position(width / 2, height / 2);
+	auto [xpos, ypos] = MousePosition();
+	SetMousePosition(width / 2, height / 2);
 
 	_hangle += speed * float(width / 2 - xpos);
 	_vangle += speed * float(height / 2 - ypos);
@@ -65,24 +66,24 @@ void Camera::update() {
 
 	// right vector
 	glm::vec3 right = {
-		sin(_hangle - common::pi / 2.f),
+		sin(_hangle - common::Pi / 2.f),
 		0,
-		cos(_hangle - common::pi / 2.f)
+		cos(_hangle - common::Pi / 2.f)
 	};
 	
-	if (is_key_pressed(GLFW_KEY_UP)) {
+	if (IsKeyPressed(GLFW_KEY_UP)) {
 		_position += direction * frame_time * speed;
 	}
 	// Move backward
-	if (is_key_pressed(GLFW_KEY_DOWN)) {
+	if (IsKeyPressed(GLFW_KEY_DOWN)) {
 		_position -= direction * frame_time * speed;
 	}
 	// Strafe right
-	if (is_key_pressed(GLFW_KEY_RIGHT)) {
+	if (IsKeyPressed(GLFW_KEY_RIGHT)) {
 		_position += right * frame_time * speed;
 	}
 	// Strafe left
-	if (is_key_pressed(GLFW_KEY_LEFT)) {
+	if (IsKeyPressed(GLFW_KEY_LEFT)) {
 		_position -= right * frame_time * speed;
 	}
 

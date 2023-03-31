@@ -7,16 +7,16 @@ class Particle {
 public:
 	Particle();
 
-	void update(std::vector<Particle*> &near_particles);
+	void Update(std::vector<Particle*> &near_particles);
 
-	glm::vec3 position() const { return _position; }
-	glm::vec3 velocity() const { return _velocity; }
+	glm::vec3 Position() const { return _position; }
+	glm::vec3 Velocity() const { return _velocity; }
 
-	int lifetime() const { return _lifetime; }
+	int Lifetime() const { return _lifetime; }
 
-	float x() const { return _position.x; }
-	float y() const { return _position.y; }
-	float z() const { return _position.z; }
+	float X() const { return _position.x; }
+	float Y() const { return _position.y; }
+	float Z() const { return _position.z; }
 
 protected:
 	glm::vec3 _position;

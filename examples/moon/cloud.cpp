@@ -9,21 +9,21 @@ Cloud::Cloud() {
 	_texture = std::make_shared<Texture>();
 	_position = glm::vec3(-0.3f, 1, -3.f);
 
-	_texture->load("../assets/blue_particle.png");
-	_shader->load("../assets/particle.vert", "../assets/particle.frag", "../assets/particle.geom");
+	_texture->Load("../assets/blue_particle.png");
+	_shader->Load("../assets/particle.vert", "../assets/particle.frag", "../assets/particle.geom");
 
-	add_texture(_texture);
-	set_shader(_shader);
-	set_mesh(_mesh);
+	AddTexture(_texture);
+	SetShader(_shader);
+	SetMesh(_mesh);
 }
 
 
-void Cloud::render(const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &proj) {
+void Cloud::Render(const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &proj) {
 
 	glDepthMask(false);
 
 	auto translated_model = glm::translate(model, _position);
-	Object::render(translated_model, view, proj);
+	Object::Render(translated_model, view, proj);
 
 	glDepthMask(true);
 }

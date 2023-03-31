@@ -14,12 +14,12 @@ public:
 	CloudMesh(size_t count = 1500);
 	~CloudMesh();
 
-	void draw() override;
+	void Draw() override;
 
 protected:
 	KDTree *_tree;
 	std::vector<Particle*> _particles;
-	std::vector<Particle*> _near_particles;
+	std::vector<Particle*> _nearParticles;
 
 	VertexBuffer _buffer;
 	VertexArray _array;

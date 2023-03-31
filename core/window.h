@@ -26,39 +26,39 @@ public:
 	Window(const WindowProps &props);
 	~Window();
 
-	void make_current_context();
-	void swap_buffers();
-	bool should_close();
-	void close();
+	void MakeCurrentContext();
+	void SwapBuffers();
+	bool ShouldClose();
+	void Close();
 
-	void error_callback(int error, const char *description);
-	void key_callback(int key, int action);
-	void scroll_callback(double xoffset, double yoffset);
+	void ErrorCallback(int error, const char *description);
+	void KeyCallback(int key, int action);
+	void ScrollCallback(double xoffset, double yoffset);
 
-	float ratio() const;
+	float Ratio() const;
 
-	GLFWwindow *native_handle();
+	GLFWwindow *NativeHandle();
 
-	WindowProps properties() const;
-	double width() const;
-	double height() const;
+	WindowProps Properties() const;
+	double Width() const;
+	double Height() const;
 
-	void setup_callbacks();
+	void SetupCallbacks();
 
-	static std::shared_ptr<Window> create(const WindowProps &props = WindowProps()) {
+	static std::shared_ptr<Window> Create(const WindowProps &props = WindowProps()) {
 		return std::make_shared<Window>(props);
 	}
 
 public:
-	using ScrollCallback = std::function<void(double, double)>;
-	std::vector<ScrollCallback> scroll_callbacks;
+	using ScrollCallbackFunc = std::function<void(double, double)>;
+	std::vector<ScrollCallbackFunc> scroll_callbacks;
 
 protected:
 	WindowProps _properties;
 	GLFWwindow *_handle;
 };
 
-inline void operator+=(std::vector<Window::ScrollCallback> &storage, Window::ScrollCallback callback) {
+inline void operator+=(std::vector<Window::ScrollCallbackFunc> &storage, Window::ScrollCallbackFunc callback) {
 	storage.push_back(callback);
 }
 

@@ -7,10 +7,10 @@ using namespace en61;
 Particle::Particle() {
 	_lifetime = 250;
 	_velocity = glm::vec3(0,0,0);
-	_position = glm::vec3((random_float() - 0.5) / 3, -0.5, (random_float() - 0.5) / 3);
+	_position = glm::vec3((RandomFloat() - 0.5) / 3, -0.5, (RandomFloat() - 0.5) / 3);
 }
 
-void Particle::update(std::vector<Particle*> &near_particles) {
+void Particle::Update(std::vector<Particle*> &near_particles) {
 
 	static constexpr float delta = 7.0f / 1000.0f;
 

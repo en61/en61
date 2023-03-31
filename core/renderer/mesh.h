@@ -11,15 +11,15 @@ namespace en61 {
 
 class IMesh {
 public:
-	virtual void draw() = 0;
+	virtual void Draw() = 0;
 };
 
 class Mesh: public IMesh {
 public:
 	Mesh() = default;
 
-	void load(const std::string &path);
-	void draw();
+	void Load(const std::string &path);
+	void Draw();
 
 protected:
 	size_t _vnum{0};

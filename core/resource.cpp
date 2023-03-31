@@ -6,15 +6,15 @@
 
 namespace en61 {
 
-ResourceManager::ResourceManager(const std::string &working_dir) {
-	set_base_path(working_dir);
+ResourceManager::ResourceManager(const std::string &workingDir) {
+	SetBasePath(workingDir);
 }
 
-std::string ResourceManager::locate_file(const std::string &file) {
+std::string ResourceManager::LocateFile(const std::string &file) {
 	return _basepath + file;
 }
 
-void ResourceManager::set_base_path(const std::string &path) {
+void ResourceManager::SetBasePath(const std::string &path) {
 	_basepath = path;
 }
 

@@ -13,19 +13,19 @@ public:
 	Application(const WindowProps &win_props = WindowProps());
 	virtual ~Application();
    
-	virtual void clear();
-	virtual void render();
-	virtual void start();
+	virtual void Clear();
+	virtual void Render();
+	virtual void Start();
 
-	static void enable_depth_testing();
+	static void EnableDepthTesting();
 
-	static void print_gl_version();
-	static void error_callback(int error, const char *description);
+	static void PrintGLVersion();
+	static void ErrorCallback(int error, const char *description);
 	
-    static std::pair<int, int> get_monitor_resolution();
+    static std::pair<int, int> GetMonitorResolution();
 
-	static Application *get() { return _instance; }
-	std::shared_ptr<Window> window() const { return _window; }
+	static Application *Get() { return _instance; }
+	std::shared_ptr<Window> GetWindow() const { return _window; }
 
 protected:
 	std::shared_ptr<Window> _window;

@@ -2,7 +2,7 @@
 
 namespace en61 {
 
-inline float random_float() {
+inline float RandomFloat() {
 	return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 }
 

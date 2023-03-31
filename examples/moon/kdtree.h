@@ -9,7 +9,7 @@ public:
 	KDTree(int depth, std::vector<Particle*> particles);
 	~KDTree();
 
-	void find_in_range(float range, glm::vec3 position, std::vector<Particle*> &_near_particles, float largest_distance = 100000.0f);
+	void FindInRange(float range, glm::vec3 position, std::vector<Particle*> &nearParticles, float largest_distance = 100000.0f);
 
 protected:
 	int _depth;

@@ -10,7 +10,7 @@
 
 namespace en61 {
 
-void Mesh::load(const std::string &path) {
+void Mesh::Load(const std::string &path) {
 	std::ifstream ifs(path);
 
 	if (!ifs.is_open()) {
@@ -92,30 +92,30 @@ void Mesh::load(const std::string &path) {
 	}
 
 	// setting vertex array
-	_array.bind();
+	_array.Bind();
 
-	_position_buffer.set(positions);
-	_position_buffer.enable_attribute(0, 3);
+	_position_buffer.Set(positions);
+	_position_buffer.EnableAttribute(0, 3);
 
-	_normal_buffer.set(normals);
-	_normal_buffer.enable_attribute(1, 3);
+	_normal_buffer.Set(normals);
+	_normal_buffer.EnableAttribute(1, 3);
 
-	_uv_buffer.set(uvs);
-	_uv_buffer.enable_attribute(2, 2);
+	_uv_buffer.Set(uvs);
+	_uv_buffer.EnableAttribute(2, 2);
 
-	_tangent_buffer.set(tangents);
-	_tangent_buffer.enable_attribute(3, 3);
+	_tangent_buffer.Set(tangents);
+	_tangent_buffer.EnableAttribute(3, 3);
 
-	_array.unbind();
+	_array.Unbind();
 
-	_position_buffer.disable_attribute(0);
-	_normal_buffer.disable_attribute(1);
-	_uv_buffer.disable_attribute(2);
-	_tangent_buffer.disable_attribute(3);
+	_position_buffer.DisableAttribute(0);
+	_normal_buffer.DisableAttribute(1);
+	_uv_buffer.DisableAttribute(2);
+	_tangent_buffer.DisableAttribute(3);
 }
 
-void Mesh::draw() {
-	_array.draw_triangles(_vnum);
+void Mesh::Draw() {
+	_array.DrawTriangles(_vnum);
 }
 
 } // namespace en61

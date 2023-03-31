@@ -14,9 +14,9 @@ KDTree::KDTree(int depth, std::vector<Particle*> particles)
 
 		int axis = depth % 3;
 
-		float start = particles.front()->position()[axis];
-		float middle = particles[median]->position()[axis];
-		float end = particles.back()->position()[axis];
+		float start = particles.front()->Position()[axis];
+		float middle = particles[median]->Position()[axis];
+		float end = particles.back()->Position()[axis];
 
 
 		if (start > end && middle > start || start > middle)
@@ -47,21 +47,21 @@ KDTree::~KDTree() {
 }
 
 //recursive function to find all the particles within a range of a particle
-void KDTree::find_in_range(float squared_range, glm::vec3 position, std::vector<Particle*> &near_particles, float largest_distance) {
+void KDTree::FindInRange(float squaredRange, glm::vec3 position, std::vector<Particle*> &nearParticles, float largestDistance) {
 
-	float distance = std::pow(glm::length(position - _point->position()), 2);
+	float distance = std::pow(glm::length(position - _point->Position()), 2);
 
-	if (distance < largest_distance) {
+	if (distance < largestDistance) {
 		//if the distance is within the range, add this node's particle to the vector
-		if (distance <= squared_range)
-			near_particles.push_back(_point);
+		if (distance <= squaredRange)
+			nearParticles.push_back(_point);
 		else
-			largest_distance = distance;
+			largestDistance = distance;
 
 		//if there are nodes beneath the one being checked, call the function in those nodes
 		if (_left)
-			_left->find_in_range(squared_range, position, near_particles, largest_distance);
+			_left->FindInRange(squaredRange, position, nearParticles, largestDistance);
 		if (_right)
-			_right->find_in_range(squared_range, position, near_particles, largest_distance);
+			_right->FindInRange(squaredRange, position, nearParticles, largestDistance);
 	}
 }

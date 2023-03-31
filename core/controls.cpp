@@ -4,23 +4,23 @@
 
 namespace en61 {
 
-std::pair<double, double> mouse_position() {
-	GLFWwindow *window = static_cast<GLFWwindow*>(Application::get()->window()->native_handle());
+std::pair<double, double> MousePosition() {
+	GLFWwindow *window = static_cast<GLFWwindow*>(Application::Get()->GetWindow()->NativeHandle());
 
 	double xpos, ypos;
 	glfwGetCursorPos(window, &xpos, &ypos);
 	return {xpos, ypos};
 }
 
-void set_mouse_position(double width, double height) {
-	GLFWwindow *window = static_cast<GLFWwindow*>(Application::get()->window()->native_handle());
+void SetMousePosition(double width, double height) {
+	GLFWwindow *window = static_cast<GLFWwindow*>(Application::Get()->GetWindow()->NativeHandle());
 
 	glfwSetCursorPos(window, width, height);
 }
 
 
-bool is_key_pressed(int key) {
-	GLFWwindow *window = static_cast<GLFWwindow*>(Application::get()->window()->native_handle());
+bool IsKeyPressed(int key) {
+	GLFWwindow *window = static_cast<GLFWwindow*>(Application::Get()->GetWindow()->NativeHandle());
 	
 	return glfwGetKey(window, key) == GLFW_PRESS;
 }

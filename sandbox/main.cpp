@@ -12,24 +12,24 @@ public:
     Sandbox(const WindowProps &props)
         : Application(props), _camera(_window) {
         
-        enable_depth_testing();
+        EnableDepthTesting();
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    virtual void render() override {
-        Application::clear();
+    virtual void Render() override {
+        Application::Clear();
 
-        _camera.update();
-		auto model = _camera.get_model();
-		auto view = _camera.get_view();
-		auto projection = _camera.get_projection();
+        _camera.Update();
+		auto model = _camera.GetModel();
+		auto view = _camera.GetView();
+		auto projection = _camera.GetProjection();
         
-        _surface.render(model, view, projection);
+        _surface.Render(model, view, projection);
 
-        Application::render();
+        Application::Render();
     }
 
     static auto create(const WindowProps &props) {
@@ -43,6 +43,6 @@ protected:
 
 int main() {
     auto app = Sandbox::create({1920, 1080, "Sandbox"});
-    app->start();
+    app->Start();
     return 0;
 }

@@ -5,10 +5,10 @@
 
 namespace en61 {
 
-std::pair<double, double> mouse_position();
+std::pair<double, double> MousePosition();
 
-void set_mouse_position(double width, double height);
+void SetMousePosition(double width, double height);
 
-bool is_key_pressed(int key);
+bool IsKeyPressed(int key);
 
 } // namespace en61

@@ -13,12 +13,12 @@ class Camera {
 public:
 	Camera(std::shared_ptr<Window> window, glm::vec3 position = {0, 2.f, -7.f}, float fov = 45.f);
 
-	void update();
+	void Update();
 
-	glm::mat4 get_mvp() const;
-	glm::mat4 get_view() const;
-	glm::mat4 get_model() const;
-	glm::mat4 get_projection() const;
+	glm::mat4 GetMVP() const;
+	glm::mat4 GetView() const;
+	glm::mat4 GetModel() const;
+	glm::mat4 GetProjection() const;
 
 protected:
 	std::shared_ptr<Window> _window;

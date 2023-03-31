@@ -24,27 +24,27 @@ public:
 	Shader() = default;
 	~Shader();
 	
-	GLuint id() const;
-	GLuint get_uniform_location(const std::string &name);
-	GLuint get_attrib_location(const std::string &name);
+	GLuint Id() const;
+	GLuint GetUniformLocation(const std::string &name);
+	GLuint GetAttribLocation(const std::string &name);
 
-	void use();
-	void load(const std::string &vpath, const std::string &fpath);
-	void load(const std::string &vpath, const std::string &fpath, const std::string &gpath);
+	void Use();
+	void Load(const std::string &vpath, const std::string &fpath);
+	void Load(const std::string &vpath, const std::string &fpath, const std::string &gpath);
 
-	void set_matrix4(const std::string &name, const glm::mat4 &matrix);
-	void set_vec4(const std::string &name, const glm::vec4 &vec);
-	void set_integer(const std::string &name, GLint value);
+	void SetMatrix4(const std::string &name, const glm::mat4 &matrix);
+	void SetVec4(const std::string &name, const glm::vec4 &vec);
+	void SetInteger(const std::string &name, GLint value);
 
 protected:
-	void create_shaders();
-	void compile_shaders();
+	void CreateShaders();
+	void CompileShaders();
 
-	void check_shader_error(const GLuint id);
-	void check_program_error();
+	void CheckShaderError(const GLuint id);
+	void CheckProgramError();
 
-	GLuint compile_shader(const std::string &code, unsigned shader_type);
-	std::string load_shader_code(const std::string &path);
+	GLuint CompileShader(const std::string &code, unsigned shader_type);
+	std::string LoadShaderCode(const std::string &path);
 
 protected:
 	GLuint _id;

@@ -13,7 +13,7 @@ Window::Window(const WindowProps &props) : _properties(props) {
 	glfwSetInputMode(_handle, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	glfwSetWindowUserPointer(_handle, this);
-	setup_callbacks();
+	SetupCallbacks();
 }
 
 Window::~Window() {
@@ -21,65 +21,66 @@ Window::~Window() {
 	glfwTerminate();
 }
 
-void Window::make_current_context() {
+void Window::MakeCurrentContext() {
 	glfwMakeContextCurrent(_handle);
 }
 
-void Window::swap_buffers() {
+void Window::SwapBuffers() {
 	glfwSwapBuffers(_handle);
 }
 
-bool Window::should_close() {
+bool Window::ShouldClose() {
 	return (bool)glfwWindowShouldClose(_handle);
 }
 
-float Window::ratio() const {
+float Window::Ratio() const {
 	return (float)_properties.width / (float)_properties.height;
 }
 
-void Window::error_callback(int error, const char *description) {
+void Window::ErrorCallback(int error, const char *description) {
 	(void)error;
 	std::cerr << "error: " << description << std::endl;
 }
 
-void Window::key_callback(int key, int action) {
+void Window::KeyCallback(int key, int action) {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		close();
+		Close();
 }
 
-void Window::scroll_callback(double xoffset, double yoffset) {
+void Window::ScrollCallback(double xoffset, double yoffset) {
 	for (auto callback: scroll_callbacks)
 		callback(xoffset, yoffset);
 }
 
-void Window::close() {
+void Window::Close() {
 	glfwSetWindowShouldClose(_handle, GLFW_TRUE);
 }
 
-GLFWwindow *Window::native_handle() {
+GLFWwindow *Window::NativeHandle() {
 	return _handle;
 }
 
-WindowProps Window::properties() const {
+WindowProps Window::Properties() const {
 	return _properties;
 }
 
-double Window::width() const {
+double Window::Width() const {
 	return _properties.width;
 }
-double Window::height() const {
+
+double Window::Height() const {
 	return _properties.height;
 }
 
-void Window::setup_callbacks() {
+void Window::SetupCallbacks() {
 	auto key_func = [](GLFWwindow *window, int key, int scancode, int action, int mods) {
 		Window *handle = static_cast<Window*>(glfwGetWindowUserPointer(window));
-		return handle->key_callback(key, action);
+		return handle->KeyCallback(key, action);
 	};
 
 	auto scroll_func = [](GLFWwindow* window, double xoffset, double yoffset) {
 		Window *handle = static_cast<Window*>(glfwGetWindowUserPointer(window));
-		return handle->scroll_callback(xoffset, yoffset);
+		return handle->ScrollCallback(xoffset, yoffset);
 	};
 
 	glfwSetKeyCallback(_handle, key_func);

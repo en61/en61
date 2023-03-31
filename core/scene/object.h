@@ -13,11 +13,11 @@ class Object {
 public:
 	Object() = default;
 
-	virtual void render(const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection);
+	virtual void Render(const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection);
 
-	void add_texture(std::shared_ptr<Texture> texture);
-	void set_mesh(std::shared_ptr<IMesh> mesh);
-	void set_shader(std::shared_ptr<Shader> shader);
+	void AddTexture(std::shared_ptr<Texture> texture);
+	void SetMesh(std::shared_ptr<IMesh> mesh);
+	void SetShader(std::shared_ptr<Shader> shader);
 
 protected:
 	std::vector<std::shared_ptr<Texture>> _textures;

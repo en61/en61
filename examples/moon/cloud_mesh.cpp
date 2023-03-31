@@ -12,7 +12,7 @@ CloudMesh::~CloudMesh() {
 	delete [] _positions;
 }
 
-void CloudMesh::draw() {
+void CloudMesh::Draw() {
 	std::fill_n(_positions, _count * 3, -5);
 	if (_particles.size() < _count - 6) {
 		for (int i = 0; i < 6; i++)
@@ -23,27 +23,27 @@ void CloudMesh::draw() {
 
 	for (unsigned int i = 0; i < _particles.size(); i++)
 	{
-		_near_particles.clear();
-		_tree->find_in_range(0.3f,_particles[i]->position(), _near_particles);
-		_particles[i]->update(_near_particles);
+		_nearParticles.clear();
+		_tree->FindInRange(0.3f,_particles[i]->Position(), _nearParticles);
+		_particles[i]->Update(_nearParticles);
 
-		if (_particles[i]->lifetime() < 0) {
+		if (_particles[i]->Lifetime() < 0) {
 			delete _particles[i];
 			_particles.erase(_particles.begin()+i);
 			i--;
 		}
 		else {
-			_positions[i * 3]   = _particles[i]->x();
-			_positions[i * 3 + 1] = _particles[i]->y();
-			_positions[i * 3 + 2] = _particles[i]->z();
+			_positions[i * 3]   = _particles[i]->X();
+			_positions[i * 3 + 1] = _particles[i]->Y();
+			_positions[i * 3 + 2] = _particles[i]->Z();
 		}
 	}
 	delete _tree;
 
-	_array.bind();
-	_buffer.set(sizeof(float) * _count * 3, _positions);
-	_buffer.enable_attribute(0, 3);
-	_array.unbind();
+	_array.Bind();
+	_buffer.Set(sizeof(float) * _count * 3, _positions);
+	_buffer.EnableAttribute(0, 3);
+	_array.Unbind();
 
-	_array.draw_points(_count);
+	_array.DrawPoints(_count);
 }

@@ -14,7 +14,7 @@ Application::Application(const WindowProps &win_props) {
 	assert((!_instance && "Application already launched!"));
 	_instance = this;
 
-	glfwSetErrorCallback(error_callback);
+	glfwSetErrorCallback(ErrorCallback);
 
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
@@ -24,56 +24,56 @@ Application::Application(const WindowProps &win_props) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	_window = Window::create(win_props);
-	_window->make_current_context();
+	_window = Window::Create(win_props);
+	_window->MakeCurrentContext();
 
 	gladLoadGL();
-	print_gl_version();
+	PrintGLVersion();
 	glfwSwapInterval(0);
 }
 
-void Application::enable_depth_testing() {
+void Application::EnableDepthTesting() {
 	glEnable(GL_DEPTH_TEST);
 }
 
 Application::~Application() {
 }
 
-void Application::clear() {
+void Application::Clear() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-std::pair<int, int> Application::get_monitor_resolution() {
+std::pair<int, int> Application::GetMonitorResolution() {
     const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     return std::make_pair(mode->width, mode->height);
 }
 
-void Application::render() {
-	_window->swap_buffers();
+void Application::Render() {
+	_window->SwapBuffers();
 	glfwPollEvents();
 }
 
-void Application::start() {
+void Application::Start() {
 
 	double lasttime = glfwGetTime();
-	static constexpr double target_fps = 60.f;
+	static constexpr double targetFPS = 60.f;
 
-	while (!_window->should_close()) {
-		render();
+	while (!_window->ShouldClose()) {
+		Render();
 
-		while (glfwGetTime() < lasttime + 1.0 / target_fps) {
+		while (glfwGetTime() < lasttime + 1.0 / targetFPS) {
 			usleep(1);
 		}
 
-		lasttime += 1.0 / target_fps;
+		lasttime += 1.0 / targetFPS;
 	}
 }
 
-void Application::print_gl_version() {
+void Application::PrintGLVersion() {
 	std::cerr << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 }
 
-void Application::error_callback(int error, const char *description) {
+void Application::ErrorCallback(int error, const char *description) {
 	(void)error;
 	std::cerr << "error: " << description << std::endl;
 }

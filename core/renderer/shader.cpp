@@ -19,8 +19,8 @@ std::string Shader::LoadShaderCode(const std::string &path) {
 	
 	std::ifstream stream(path, std::ios::in);
 	if (!stream.is_open()) {
-	    std::cerr << "cannot load shader file: " << path << std::endl;
-	    return "";
+		std::cerr << "cannot load shader file: " << path << std::endl;
+		return "";
 	}
 	std::stringstream sstr;
 	sstr << stream.rdbuf();
@@ -106,7 +106,7 @@ void Shader::CompileShaders() {
 	_id = glCreateProgram();
 	
 	for (auto shader_id: _shader_ids) {
-	    glAttachShader(_id, shader_id);
+		glAttachShader(_id, shader_id);
 	}
 
 	glLinkProgram(_id);
@@ -124,7 +124,7 @@ void Shader::Load(const std::string &vpath, const std::string &fpath) {
 	_shaders.emplace_back(fpath, GL_FRAGMENT_SHADER);
 
 	CreateShaders(); 
-    CompileShaders();	
+	CompileShaders();	
 }
 
 void Shader::Load(const std::string &vpath, const std::string &fpath, const std::string &gpath) {
@@ -147,7 +147,7 @@ void Shader::SetMatrix4(const std::string &name, const glm::mat4 &matrix) {
 }
 
 void Shader::SetInteger(const std::string &name, GLint value) {
-    Use();
+	Use();
 	glUniform1i(GetUniformLocation(name), value);
 }
 

@@ -44,8 +44,8 @@ void Application::Clear() {
 }
 
 std::pair<int, int> Application::GetMonitorResolution() {
-    const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    return std::make_pair(mode->width, mode->height);
+	const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	return std::make_pair(mode->width, mode->height);
 }
 
 void Application::Render() {
@@ -56,16 +56,16 @@ void Application::Render() {
 void Application::Start() {
 
 	double lasttime = glfwGetTime();
-	static constexpr double targetFPS = 60.f;
+	static constexpr double target_fps = 60.f;
 
 	while (!_window->ShouldClose()) {
 		Render();
 
-		while (glfwGetTime() < lasttime + 1.0 / targetFPS) {
+		while (glfwGetTime() < lasttime + 1.0 / target_fps) {
 			usleep(1);
 		}
 
-		lasttime += 1.0 / targetFPS;
+		lasttime += 1.0 / target_fps;
 	}
 }
 

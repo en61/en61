@@ -19,7 +19,7 @@ Camera::Camera(std::shared_ptr<Window> window, glm::vec3 position, float fov)
 		window->scroll_callbacks += [this](double xoffset, double yoffset) {
 			float new_fov = this->_fov - yoffset * 5;
 			if (new_fov > 0 && new_fov < 180)
-			    this->_fov = new_fov;
+				this->_fov = new_fov;
 		};
 
 	}

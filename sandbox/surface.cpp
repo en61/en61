@@ -9,8 +9,7 @@ Surface::Surface() {
 	_mesh->Load("../assets/surface.obj");
 	_texture->Load("../assets/grass.png");
 
-    SetMesh(_mesh);
+	SetMesh(_mesh);
 	SetShader(_shader);
 	AddTexture(_texture);
 }
-

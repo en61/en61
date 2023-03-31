@@ -14,7 +14,7 @@ void Mesh::Load(const std::string &path) {
 	std::ifstream ifs(path);
 
 	if (!ifs.is_open()) {
-	    std::cerr << "Mesh not found: " << path << std::endl;
+		std::cerr << "Mesh not found: " << path << std::endl;
 	}
 
 	std::vector<glm::vec3> temp_positions;

@@ -22,7 +22,7 @@ public:
 	static void PrintGLVersion();
 	static void ErrorCallback(int error, const char *description);
 	
-    static std::pair<int, int> GetMonitorResolution();
+	static std::pair<int, int> GetMonitorResolution();
 
 	static Application *Get() { return _instance; }
 	std::shared_ptr<Window> GetWindow() const { return _window; }

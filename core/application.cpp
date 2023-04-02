@@ -1,3 +1,4 @@
+#include <core/platform/system.h>
 #include <core/window.h>
 #include <core/application.h>
 
@@ -62,7 +63,7 @@ void Application::Start() {
 		Render();
 
 		while (glfwGetTime() < lasttime + 1.0 / target_fps) {
-			usleep(1);
+			Sleep(1);
 		}
 
 		lasttime += 1.0 / target_fps;

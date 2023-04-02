@@ -66,9 +66,9 @@ void Camera::Update() {
 
 	// right vector
 	glm::vec3 right = {
-		sin(_hangle - common::Pi / 2.f),
+		sin(_hangle - constants::Pi / 2.f),
 		0,
-		cos(_hangle - common::Pi / 2.f)
+		cos(_hangle - constants::Pi / 2.f)
 	};
 	
 	if (IsKeyPressed(GLFW_KEY_UP)) {

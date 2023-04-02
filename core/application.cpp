@@ -3,7 +3,6 @@
 #include <core/application.h>
 
 #include <cassert>
-#include <unistd.h>
 #include <utility>
 
 namespace en61 {

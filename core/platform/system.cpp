@@ -14,14 +14,13 @@ namespace en61 {
 void Sleep(u32 ms) {
 
 #ifdef _WIN32
-	Sleep(ms);
+	::Sleep(ms);
 
 #elif __unix__
 	struct timespec ts;
 	int res;
 
-	if (ms < 0)
-	{
+	if (ms < 0) {
 		errno = EINVAL;
 		return;
 	}

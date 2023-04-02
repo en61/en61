@@ -1,9 +1,13 @@
+# EN61
+
+A graphics/game engine written in c++17.
+
 # Compilation
 
 * Download sources:
   ```bash
   git clone git@github.com:en61/en61.git
-  cd en61
+  cd en61/
   ```
 
 * Compile library:

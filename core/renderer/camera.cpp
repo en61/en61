@@ -49,6 +49,7 @@ void Camera::Update() {
 	double current_time = glfwGetTime();
 	float frame_time = current_time - _prevtime;
 	float speed = 0.001f;
+	float move_speed = 10.f;
 
 	double width = _window->Width();
 	double height = _window->Height();
@@ -74,19 +75,19 @@ void Camera::Update() {
 	};
 	
 	if (IsKeyPressed(GLFW_KEY_UP)) {
-		_position += direction * frame_time * speed;
+		_position += direction * frame_time * move_speed;
 	}
 	// Move backward
 	if (IsKeyPressed(GLFW_KEY_DOWN)) {
-		_position -= direction * frame_time * speed;
+		_position -= direction * frame_time * move_speed;
 	}
 	// Strafe right
 	if (IsKeyPressed(GLFW_KEY_RIGHT)) {
-		_position += right * frame_time * speed;
+		_position += right * frame_time * move_speed;
 	}
 	// Strafe left
 	if (IsKeyPressed(GLFW_KEY_LEFT)) {
-		_position -= right * frame_time * speed;
+		_position -= right * frame_time * move_speed;
 	}
 
 	_target = _position + direction;

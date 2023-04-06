@@ -19,6 +19,8 @@ public:
 	void SetMesh(std::shared_ptr<IMesh> mesh);
 	void SetShader(std::shared_ptr<Shader> shader);
 
+	virtual glm::mat4 GetModel();
+
 protected:
 	std::vector<std::shared_ptr<Texture>> _textures;
 	std::shared_ptr<Shader> _shader;

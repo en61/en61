@@ -15,10 +15,9 @@ public:
 
 	void Update();
 
-	glm::mat4 GetMVP() const;
 	glm::mat4 GetView() const;
-	glm::mat4 GetModel() const;
 	glm::mat4 GetProjection() const;
+	glm::mat4 GetViewProjection() const;
 
 protected:
 	std::shared_ptr<Window> _window;

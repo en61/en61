@@ -3,7 +3,11 @@
 #include <core/window.h>
 #include <memory>
 
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "glm/ext/matrix_transform.hpp"
 #include "surface.h"
+#include "cube.h"
 
 using namespace en61;
 
@@ -23,11 +27,16 @@ public:
 		Application::Clear();
 
 		_camera.Update();
-		auto model = _camera.GetModel();
 		auto view = _camera.GetView();
 		auto projection = _camera.GetProjection();
 
-		_surface.Render(model, view, projection);
+		
+		glDepthMask(false);
+
+		_surface.Render(_surface.GetModel(), view, projection);
+		_cube.Render(_cube.GetModel(), view, projection);
+
+		glDepthMask(true);
 
 		Application::Render();
 	}
@@ -38,11 +47,12 @@ public:
 
 protected:
 	Surface _surface;
+	Cube _cube;
 	Camera _camera;
 };
 
 int main() {
-	auto app = Sandbox::create({1920, 1080, "Sandbox"});
+	auto app = Sandbox::create({2560, 1440, "Sandbox"});
 	app->Start();
 	return 0;
 }

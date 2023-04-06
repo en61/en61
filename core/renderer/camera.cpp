@@ -1,4 +1,4 @@
-#include "core/controls.h"
+#include <core/controls.h>
 #include <core/renderer/camera.h>
 
 #include <core/common.h>
@@ -13,25 +13,22 @@ namespace en61 {
 
 Camera::Camera(std::shared_ptr<Window> window, glm::vec3 position, float fov)
 	: _window(window), _position(position), _fov(fov) {
-		_ratio = _window->Ratio();
-		_prevtime = glfwGetTime();
-		_hangle = 0.f;
-		_vangle = 0.f;
+	
+	_ratio = _window->Ratio();
+	_prevtime = glfwGetTime();
 
-		window->scroll_callbacks += [this](double xoffset, double yoffset) {
-			float new_fov = this->_fov - yoffset * 5;
-			if (new_fov > 0 && new_fov < 180)
-				this->_fov = new_fov;
-		};
+	_hangle = 0.f;
+	_vangle = 0.f;
 
-	}
+	window->scroll_callbacks += [this](double xoffset, double yoffset) {
+		float new_fov = this->_fov - yoffset * 5;
+		if (new_fov > 0 && new_fov < 180)
+			this->_fov = new_fov;
+	};
+}
 
 glm::mat4 Camera::GetView() const {
 	return glm::lookAt(_position, _target, _up);
-}
-
-glm::mat4 Camera::GetModel() const {
-	return glm::mat4(1.0f);
 }
 
 glm::mat4 Camera::GetProjection() const {
@@ -41,8 +38,8 @@ glm::mat4 Camera::GetProjection() const {
 	return glm::perspective(glm::radians(_fov), _ratio, znear, zfar);
 }
 
-glm::mat4 Camera::GetMVP() const {
-	return GetProjection() * GetView() * GetModel();
+glm::mat4 Camera::GetViewProjection() const {
+	return GetProjection() * GetView();
 }
 
 void Camera::Update() {
@@ -62,7 +59,7 @@ void Camera::Update() {
 
 	// direction: spherical coordinates to cartesian coordinates conversion
 	glm::vec3 direction = {
-		cos(_vangle) * sin(_hangle), 
+		cos(_vangle) * sin(_hangle),
 		sin(_vangle),
 		cos(_vangle) * cos(_hangle)
 	};
@@ -74,19 +71,23 @@ void Camera::Update() {
 		cos(_hangle - constants::Pi / 2.f)
 	};
 	
-	if (IsKeyPressed(GLFW_KEY_UP)) {
+
+	if (IsKeyPressed(GLFW_KEY_UP) || IsKeyPressed(GLFW_KEY_W)) {
 		_position += direction * frame_time * move_speed;
 	}
+
 	// Move backward
-	if (IsKeyPressed(GLFW_KEY_DOWN)) {
+	if (IsKeyPressed(GLFW_KEY_DOWN) || IsKeyPressed(GLFW_KEY_S)) {
 		_position -= direction * frame_time * move_speed;
 	}
+
 	// Strafe right
-	if (IsKeyPressed(GLFW_KEY_RIGHT)) {
+	if (IsKeyPressed(GLFW_KEY_RIGHT) || IsKeyPressed(GLFW_KEY_D)) {
 		_position += right * frame_time * move_speed;
 	}
+
 	// Strafe left
-	if (IsKeyPressed(GLFW_KEY_LEFT)) {
+	if (IsKeyPressed(GLFW_KEY_LEFT) || IsKeyPressed(GLFW_KEY_A)) {
 		_position -= right * frame_time * move_speed;
 	}
 

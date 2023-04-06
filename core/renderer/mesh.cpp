@@ -1,5 +1,4 @@
 #include <core/renderer/mesh.h>
-
 #include <core/resource.h>
 
 #include <fstream>

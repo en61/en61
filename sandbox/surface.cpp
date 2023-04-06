@@ -1,5 +1,7 @@
 #include "surface.h"
 
+#include <glm/ext/matrix_transform.hpp>
+
 Surface::Surface() {
 	_mesh = std::make_shared<Mesh>();
 	_shader = std::make_shared<Shader>();

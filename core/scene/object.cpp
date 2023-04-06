@@ -1,7 +1,5 @@
 #include <core/scene/object.h>
-
 #include <glm/gtc/matrix_transform.hpp>
-
 #include <iostream>
 
 namespace en61 {
@@ -18,7 +16,7 @@ void Object::Render(const glm::mat4 &model, const glm::mat4 &view, const glm::ma
 	}
 
 	if (_mesh)
-	    _mesh->Draw();
+		_mesh->Draw();
 }
 
 void Object::SetMesh(std::shared_ptr<IMesh> mesh) {
@@ -35,6 +33,10 @@ void Object::AddTexture(std::shared_ptr<Texture> texture) {
 		return;
 	}
 	_textures.push_back(texture);
+}
+
+glm::mat4 Object::GetModel() {
+	return glm::mat4(1.0);
 }
 
 } // namespace en61

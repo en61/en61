@@ -1,10 +1,14 @@
+#include "glm/ext/matrix_transform.hpp"
 #include <core/scene/object.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
 namespace en61 {
 
-void Object::Render(const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection) {
+void Object::Render(const glm::mat4 &view, const glm::mat4 &projection) {
+
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), _position);
+	
 	_shader->Use();
 	_shader->SetMatrix4("model", model);
 	_shader->SetMatrix4("view", view);
@@ -35,8 +39,12 @@ void Object::AddTexture(std::shared_ptr<Texture> texture) {
 	_textures.push_back(texture);
 }
 
-glm::mat4 Object::GetModel() {
-	return glm::mat4(1.0);
+glm::vec3 Object::GetPosition() const {
+	return _position;
+}
+
+void Object::SetPosition(const glm::vec3 &position) {
+	_position = position;
 }
 
 } // namespace en61

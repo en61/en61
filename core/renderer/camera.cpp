@@ -29,6 +29,7 @@ Camera::Camera(std::shared_ptr<Window> window, glm::vec3 position, float fov)
 
 glm::mat4 Camera::GetView() const {
 	return glm::lookAt(_position, _target, _up);
+	//return glm::lookAt(glm::vec3(0, 2, -7), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 }
 
 glm::mat4 Camera::GetProjection() const {
@@ -93,6 +94,7 @@ void Camera::Update() {
 
 	_target = _position + direction;
 	_up = glm::cross(right, direction);
+
 	_prevtime = current_time;
 }
 

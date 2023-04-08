@@ -9,11 +9,13 @@ void Object::Render(const glm::mat4 &view, const glm::mat4 &projection) {
 
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), _position);
 	
-	_shader->Use();
-	_shader->SetMatrix4("model", model);
-	_shader->SetMatrix4("view", view);
-	_shader->SetMatrix4("projection", projection);
-	_shader->SetInteger("colorTexture", 0);
+	if (_shader) {
+		_shader->Use();
+		_shader->SetMatrix4("model", model);
+		_shader->SetMatrix4("view", view);
+		_shader->SetMatrix4("projection", projection);
+		_shader->SetInteger("colorTexture", 0);
+	}
 
 	for (size_t i = 0; i < _textures.size(); i++) {
 		_textures[i]->Bind(i);
@@ -23,15 +25,15 @@ void Object::Render(const glm::mat4 &view, const glm::mat4 &projection) {
 		_mesh->Draw();
 }
 
-void Object::SetMesh(std::shared_ptr<IMesh> mesh) {
+void Object::SetMesh(Ref<IMesh> mesh) {
 	_mesh = mesh;
 }
 
-void Object::SetShader(std::shared_ptr<Shader> shader) {
+void Object::SetShader(Ref<Shader> shader) {
 	_shader = shader;
 }
 
-void Object::AddTexture(std::shared_ptr<Texture> texture) {
+void Object::AddTexture(Ref<Texture> texture) {
 	if (_textures.size() > 30) {
 		std::cerr << "Texture skipped: 30 textures limit reached!" << std::endl;
 		return;

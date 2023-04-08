@@ -4,8 +4,6 @@
 #include <core/window.h>
 #include <core/resource.h>
 
-#include <memory>
-
 namespace en61 {
 
 class Application {
@@ -25,10 +23,10 @@ public:
 	static std::pair<int, int> GetMonitorResolution();
 
 	static Application *Get() { return _instance; }
-	std::shared_ptr<Window> GetWindow() const { return _window; }
+	Ref<Window> GetWindow() const { return _window; }
 
 protected:
-	std::shared_ptr<Window> _window;
+	Ref<Window> _window;
 	static Application *_instance;
 };
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <core/opengl.h>
+#include <core/common.h>
 
 #include <string>
-#include <memory>
 
 namespace en61 {
 
@@ -14,8 +14,8 @@ public:
 	std::string LocateFile(const std::string &file);
 	void SetBasePath(const std::string &path);
 
-	static std::shared_ptr<ResourceManager> Create(const std::string &workingDir) {
-		return std::make_shared<ResourceManager>(workingDir);
+	static Ref<ResourceManager> Create(const std::string &workingDir) {
+		return MakeRef<ResourceManager>(workingDir);
 	}
 
 protected:

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <memory>
 
 namespace en61 {
 
@@ -22,5 +23,25 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
 typedef unsigned long u64;
+
+
+template <typename _Type>
+using Ref = std::shared_ptr<_Type>;
+
+template <typename _Type>
+using WeakRef = std::weak_ptr<_Type>;
+
+template <typename _Type>
+using Scoped = std::unique_ptr<_Type>;
+
+template<typename _Type, typename ..._Args>
+Ref<_Type> MakeRef(_Args &&...args) {
+	return std::make_shared<_Type>(std::forward<_Args>(args)...);
+}
+
+template<typename _Type, typename ..._Args>
+Scoped<_Type> MakeScoped(_Args &&...args) {
+	return std::make_unique<_Type>(std::forward<_Args>(args)...);
+}
 
 } // namespace en61

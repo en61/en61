@@ -3,8 +3,7 @@
 #include <core/renderer/shader.h>
 #include <core/renderer/texture.h>
 #include <core/renderer/mesh.h>
-
-#include <memory>
+#include <core/common.h>
 #include <vector>
 
 namespace en61 {
@@ -15,17 +14,17 @@ public:
 
 	virtual void Render(const glm::mat4 &view, const glm::mat4 &projection);
 
-	void AddTexture(std::shared_ptr<Texture> texture);
-	void SetMesh(std::shared_ptr<IMesh> mesh);
-	void SetShader(std::shared_ptr<Shader> shader);
+	void AddTexture(Ref<Texture> texture);
+	void SetMesh(Ref<IMesh> mesh);
+	void SetShader(Ref<Shader> shader);
 	
 	glm::vec3 GetPosition() const;
 	void SetPosition(const glm::vec3 &position);
 
 protected:
-	std::vector<std::shared_ptr<Texture>> _textures;
-	std::shared_ptr<Shader> _shader;
-	std::shared_ptr<IMesh> _mesh;
+	std::vector<Ref<Texture>> _textures;
+	Ref<Shader> _shader;
+	Ref<IMesh> _mesh;
 	glm::vec3 _position = { 0.f, 0.f, 0.f };
 };
 

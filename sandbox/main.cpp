@@ -1,16 +1,15 @@
 #include <core/application.h>
 #include <core/renderer/camera.h>
 #include <core/scene/object.h>
-#include <memory>
 
 using namespace en61;
 
 class Cube: public Object {
 public:
 	Cube() {
-		auto mesh = std::make_shared<Mesh>();
-		auto shader = std::make_shared<Shader>();
-		auto texture = std::make_shared<Texture>();
+		auto mesh = MakeRef<Mesh>();
+		auto shader = MakeRef<Shader>();
+		auto texture = MakeRef<Texture>();
 
 		mesh->Load("../assets/cube.obj");
 		texture->Load("../assets/cube.png");
@@ -26,9 +25,9 @@ public:
 class Surface: public Object { 
 public:
 	Surface() {
-		auto mesh = std::make_shared<Mesh>();
-		auto shader = std::make_shared<Shader>();
-		auto texture = std::make_shared<Texture>();
+		auto mesh = MakeRef<Mesh>();
+		auto shader = MakeRef<Shader>();
+		auto texture = MakeRef<Texture>();
 
 		shader->Load("../assets/surface.vert", "../assets/surface.frag");
 		mesh->Load("../assets/surface.obj");
@@ -41,9 +40,9 @@ public:
 };
 
 
-class MoonAnimation: public Application {
+class Sandbox: public Application {
 public:
-	MoonAnimation(const WindowProps &props = WindowProps())
+	Sandbox(const WindowProps &props = WindowProps())
 		: Application(props), _camera(_window) {
 		
 			EnableDepthTesting();
@@ -77,8 +76,8 @@ public:
 		Application::Render();
 	}
 
-	static auto create(const WindowProps &props = {}) {
-		return std::make_unique<MoonAnimation>(props);
+	static auto Create(const WindowProps &props = {}) {
+		return MakeScoped<Sandbox>(props);
 	}
 
 protected:
@@ -88,7 +87,7 @@ protected:
 };
 
 int main() {
-	auto app = MoonAnimation::create({2560, 1440, "Flame"});
+	auto app = Sandbox::Create({2560, 1440, "Flame"});
 	app->Start();
 	return 0;
 }

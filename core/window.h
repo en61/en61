@@ -1,10 +1,10 @@
 #pragma once
 
 #include <core/opengl.h>
+#include <core/common.h>
 
 #include <vector>
 #include <string>
-#include <memory>
 #include <iostream>
 #include <functional>
 
@@ -45,8 +45,8 @@ public:
 
 	void SetupCallbacks();
 
-	static std::shared_ptr<Window> Create(const WindowProps &props = WindowProps()) {
-		return std::make_shared<Window>(props);
+	static Ref<Window> Create(const WindowProps &props = WindowProps()) {
+		return MakeRef<Window>(props);
 	}
 
 public:

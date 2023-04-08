@@ -35,7 +35,7 @@ protected:
 	float _move_speed = 10.f;
 	float _camera_speed = 0.001f;
 
-	glm::vec3 _position = {0, 2, -7}; 
+	glm::vec3 _position = { 2, 4, -7 }; 
 	glm::vec3 _target;
 	glm::vec3 _up;
 };

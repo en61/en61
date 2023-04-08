@@ -1,3 +1,4 @@
+#include <core/renderer/api.h>
 #include <core/platform/system.h>
 #include <core/window.h>
 #include <core/application.h>
@@ -10,7 +11,7 @@ namespace en61 {
 Application *Application::_instance{nullptr}; 
 
 Application::Application(const WindowProps &win_props) {
-
+	
 	assert((!_instance && "Application already launched!"));
 	_instance = this;
 
@@ -30,10 +31,8 @@ Application::Application(const WindowProps &win_props) {
 	gladLoadGL();
 	PrintGLVersion();
 	glfwSwapInterval(0);
-}
 
-void Application::EnableDepthTesting() {
-	glEnable(GL_DEPTH_TEST);
+	InitAPI();
 }
 
 Application::~Application() {

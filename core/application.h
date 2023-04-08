@@ -15,8 +15,6 @@ public:
 	virtual void Render();
 	virtual void Start();
 
-	static void EnableDepthTesting();
-
 	static void PrintGLVersion();
 	static void ErrorCallback(int error, const char *description);
 	

@@ -42,15 +42,9 @@ public:
 
 class Sandbox: public Application {
 public:
+
 	Sandbox(const WindowProps &props = WindowProps())
-		: Application(props), _camera(_window) {
-		
-			EnableDepthTesting();
-			glEnable(GL_CULL_FACE);
-			glCullFace(GL_BACK);
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
+		: Application(props), _camera(_window) {  }
 
 	virtual void Render() override {
 		Application::Clear(); 
@@ -87,7 +81,7 @@ protected:
 };
 
 int main() {
-	auto app = Sandbox::Create({2560, 1440, "Flame"});
+	auto app = Sandbox::Create({2560, 1440, "EN61"});
 	app->Start();
 	return 0;
 }

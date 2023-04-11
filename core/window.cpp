@@ -10,8 +10,7 @@ Window::Window(const WindowProps &props) : _properties(props) {
 		exit(EXIT_FAILURE);
 	}
 
-	glfwSetInputMode(_handle, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
+	glfwSetInputMode(_handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetWindowUserPointer(_handle, this);
 	SetupCallbacks();
 }
@@ -42,16 +41,6 @@ void Window::ErrorCallback(int error, const char *description) {
 	std::cerr << "error: " << description << std::endl;
 }
 
-void Window::KeyCallback(int key, int action) {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		Close();
-}
-
-void Window::ScrollCallback(double xoffset, double yoffset) {
-	for (auto callback: scroll_callbacks)
-		callback(xoffset, yoffset);
-}
-
 void Window::Close() {
 	glfwSetWindowShouldClose(_handle, GLFW_TRUE);
 }
@@ -72,17 +61,41 @@ double Window::Height() const {
 	return _properties.height;
 }
 
+void Window::SetEventCallback(EventCallbackFunc callback) {
+	_event_callback = callback;
+}
+
 void Window::SetupCallbacks() {
 	auto key_func = [](GLFWwindow *window, int key, int scancode, int action, int mods) {
 		Window *handle = static_cast<Window*>(glfwGetWindowUserPointer(window));
-		return handle->KeyCallback(key, action);
+		switch (action) {
+			case GLFW_PRESS:
+				KeyPressedEvent event(key);
+				handle->_event_callback(event);
+				break;
+		}
 	};
 
 	auto scroll_func = [](GLFWwindow* window, double xoffset, double yoffset) {
 		Window *handle = static_cast<Window*>(glfwGetWindowUserPointer(window));
-		return handle->ScrollCallback(xoffset, yoffset);
+		MouseScrolledEvent event(xoffset, yoffset);
+		handle->_event_callback(event);
 	};
 
+	auto framebuffer_resize_func = [](GLFWwindow* window, int width, int height) {
+		Window *handle = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		FramebufferResizedEvent event(width, height);
+		handle->_event_callback(event);
+	};
+
+	auto mouse_moved_func = [](GLFWwindow* window, double x, double y) {
+		Window *handle = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		MouseMovedEvent event(x, y);
+		handle->_event_callback(event);
+	};
+
+	glfwSetFramebufferSizeCallback(_handle, framebuffer_resize_func);
+	glfwSetCursorPosCallback(_handle, mouse_moved_func);
 	glfwSetKeyCallback(_handle, key_func);
 	glfwSetScrollCallback(_handle, scroll_func);
 }

@@ -55,7 +55,7 @@ void Application::Render() {
 void Application::Start() {
 
 	double lasttime = glfwGetTime();
-	static constexpr double target_fps = 60.f;
+	static constexpr double target_fps = 144.f;
 
 	while (!_window->ShouldClose()) {
 		Render();

@@ -7,6 +7,10 @@
 #include <string>
 #include <iostream>
 #include <functional>
+#include <core/event/event.h>
+#include <core/event/mouse.h>
+#include <core/event/key.h>
+#include <core/event/system.h>
 
 namespace en61 {
 
@@ -26,20 +30,20 @@ public:
 	Window(const WindowProps &props);
 	~Window();
 
+	using EventCallbackFunc = std::function<void(Event&)>;
+
 	void MakeCurrentContext();
 	void SwapBuffers();
 	bool ShouldClose();
 	void Close();
 
 	void ErrorCallback(int error, const char *description);
-	void KeyCallback(int key, int action);
-	void ScrollCallback(double xoffset, double yoffset);
-
-	float Ratio() const;
+	void SetEventCallback(EventCallbackFunc callback);
 
 	GLFWwindow *NativeHandle();
-
 	WindowProps Properties() const;
+
+	float Ratio() const;
 	double Width() const;
 	double Height() const;
 
@@ -49,17 +53,11 @@ public:
 		return MakeRef<Window>(props);
 	}
 
-public:
-	using ScrollCallbackFunc = std::function<void(double, double)>;
-	std::vector<ScrollCallbackFunc> scroll_callbacks;
-
 protected:
+	EventCallbackFunc _event_callback;
 	WindowProps _properties;
 	GLFWwindow *_handle;
-};
 
-inline void operator+=(std::vector<Window::ScrollCallbackFunc> &storage, Window::ScrollCallbackFunc callback) {
-	storage.push_back(callback);
-}
+};
 
 } // namespace en61

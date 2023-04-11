@@ -21,7 +21,6 @@ public:
 	}
 };
 
-
 class Surface: public Object { 
 public:
 	Surface() {
@@ -44,12 +43,21 @@ class Sandbox: public Application {
 public:
 
 	Sandbox(const WindowProps &props = WindowProps())
-		: Application(props), _camera(_window) {  }
+		: Application(props), _camera(_window) {
+
+		_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+	}
+
+	void OnEvent(Event &e) {
+		_camera.OnEvent(e);
+	}
 
 	virtual void Render() override {
 		Application::Clear(); 
 
-		_camera.Update();
+		_camera.CalcFrameTime();
+		_camera.ProcessInput();
+
 		auto view = _camera.GetView();
 		auto projection = _camera.GetProjection();
 

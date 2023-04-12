@@ -7,21 +7,21 @@ namespace en61 {
 
 class Scene: public SceneInterface {
 public:
-    Scene(Ref<Window> window);
+	Scene(Ref<Window> window);
 
-    virtual void OnEvent(Event &e);
-    virtual void OnUpdate();
+	virtual void OnEvent(Event &e);
+	virtual void OnUpdate();
 
-    virtual void Clear();
-    virtual void UpdateCamera();
-    virtual void Render();
+	virtual void Clear();
+	virtual void UpdateCamera();
+	virtual void Render();
 
-    Ref<Camera> GetCamera() const { return _camera; }
-    void SetCamera(Ref<Camera> camera) { _camera = camera; }
+	Ref<Camera> GetCamera() const { return _camera; }
+	void SetCamera(Ref<Camera> camera) { _camera = camera; }
 
 protected:
-    Ref<Camera> _camera;
-    Ref<Window> _window;
+	Ref<Camera> _camera;
+	Ref<Window> _window;
 };
 
 } // namespace en61

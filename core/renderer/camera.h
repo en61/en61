@@ -11,55 +11,55 @@ namespace en61 {
 
 class Camera {
 public:
-    Camera(Ref<Window> window);
+	Camera(Ref<Window> window);
 
-    enum Direction {
-        FORWARD,
-        BACKWARD,
-        LEFT,
-        RIGHT
-    };
+	enum Direction {
+		FORWARD,
+		BACKWARD,
+		LEFT,
+		RIGHT
+	};
 
-    glm::mat4 GetView();
-    glm::mat4 GetProjection();
+	glm::mat4 GetView();
+	glm::mat4 GetProjection();
 
-    void CalcFrameTime();
-    void ProcessInput();
-    void ProcessKeyboard(Direction direction, float delta);
-    void ProcessMouseMovement(float xoffset, float yoffset, bool limit = true);
-    void ProcessMouseScroll(float yoffset);
+	void CalcFrameTime();
+	void ProcessInput();
+	void ProcessKeyboard(Direction direction, float delta);
+	void ProcessMouseMovement(float xoffset, float yoffset, bool limit = true);
+	void ProcessMouseScroll(float yoffset);
 
-    void OnEvent(Event &event);
-    void OnMouseScrolled(MouseScrolledEvent &event);
-    void OnMouseMoved(MouseMovedEvent &event);
+	void OnEvent(Event &event);
+	void OnMouseScrolled(MouseScrolledEvent &event);
+	void OnMouseMoved(MouseMovedEvent &event);
 
-    void SetPosition(glm::vec3 pos) { _position = pos; }
-
-protected:
-    void updateCameraVectors();
+	void SetPosition(glm::vec3 pos) { _position = pos; }
 
 protected:
-    Ref<Window> _window;
+	void updateCameraVectors();
 
-    float _last_x;
-    float _last_y;
-    float _ratio;
-    float _delta_time = 0.0f;
-    float _last_frame = 0.0f;
+protected:
+	Ref<Window> _window;
 
-    glm::vec3 _position;
-    glm::vec3 _front;
-    glm::vec3 _up;
-    glm::vec3 _right;
-    glm::vec3 _world_up;
+	float _last_x;
+	float _last_y;
+	float _ratio;
+	float _delta_time = 0.0f;
+	float _last_frame = 0.0f;
 
-    float _yaw = 90.0f;
-    float _pitch = 0.0f;
+	glm::vec3 _position;
+	glm::vec3 _front;
+	glm::vec3 _up;
+	glm::vec3 _right;
+	glm::vec3 _world_up;
 
-    float _move_speed = 5.f;
-    float _mouse_sensivity = 0.1f;
-    float _zoom = 45.f;
-    float _zoom_speed = 2.f;
+	float _yaw = 90.0f;
+	float _pitch = 0.0f;
+
+	float _move_speed = 5.f;
+	float _mouse_sensivity = 0.1f;
+	float _zoom = 45.f;
+	float _zoom_speed = 2.f;
 };
 
 } // namespace en61

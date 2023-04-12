@@ -35,30 +35,18 @@ Application::Application(const WindowProps &win_props) {
 	InitAPI();
 }
 
-Application::~Application() {
-}
-
-void Application::Clear() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
 std::pair<int, int> Application::GetMonitorResolution() {
 	const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	return std::make_pair(mode->width, mode->height);
 }
 
-void Application::Render() {
-	_window->SwapBuffers();
-	glfwPollEvents();
-}
-
-void Application::Start() {
+void Application::Run() {
 
 	double lasttime = glfwGetTime();
 	static constexpr double target_fps = 144.f;
 
 	while (!_window->ShouldClose()) {
-		Render();
+		OnUpdate();
 
 		while (glfwGetTime() < lasttime + 1.0 / target_fps) {
 			Sleep(1);

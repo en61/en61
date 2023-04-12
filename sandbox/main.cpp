@@ -1,6 +1,7 @@
 #include <core/application.h>
 #include <core/renderer/camera.h>
 #include <core/scene/object.h>
+#include <core/scene/scene.h>
 
 using namespace en61;
 
@@ -21,7 +22,7 @@ public:
 	}
 };
 
-class Surface: public Object { 
+class Surface: public Object {
 public:
 	Surface() {
 		auto mesh = MakeRef<Mesh>();
@@ -39,29 +40,19 @@ public:
 };
 
 
-class Sandbox: public Application {
+class SandboxScene: public Scene {
 public:
+	SandboxScene(Ref<Window> window)
+		: Scene(window) { }
 
-	Sandbox(const WindowProps &props = WindowProps())
-		: Application(props), _camera(_window) {
+	void Render() override {
+		Scene::Update();
+		Scene::Clear();
 
-		_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
-	}
+		auto view = Scene::GetCamera()->GetView();
+		auto proj = Scene::GetCamera()->GetProjection();
 
-	void OnEvent(Event &e) {
-		_camera.OnEvent(e);
-	}
-
-	virtual void Render() override {
-		Application::Clear(); 
-
-		_camera.CalcFrameTime();
-		_camera.ProcessInput();
-
-		auto view = _camera.GetView();
-		auto projection = _camera.GetProjection();
-
-		_surface.Render(view, projection);
+		_surface.Render(view, proj);
 		
 		_cubes[0].SetPosition({2, 0.5, 0});
 		_cubes[1].SetPosition({3, 1.5, 0});
@@ -73,9 +64,25 @@ public:
 		_cubes[7].SetPosition({1, 1.5, 0});
 
 		for (size_t i = 0; i < 8; i++)
-			_cubes[i].Render(view, projection);
+			_cubes[i].Render(view, proj);
 
-		Application::Render();
+		Scene::Render();
+	}
+
+protected:
+	Cube _cubes[8];
+	Surface _surface;
+};
+
+class Sandbox: public Application {
+public:
+
+	Sandbox(const WindowProps &props)
+		: Application(props), _scene(GetWindow()) {
+	}
+
+	void OnUpdate() override {
+		_scene.Render();
 	}
 
 	static auto Create(const WindowProps &props = {}) {
@@ -83,13 +90,11 @@ public:
 	}
 
 protected:
-	Cube _cubes[8];
-	Surface _surface;
-	Camera _camera;
+	SandboxScene _scene;
 };
 
 int main() {
 	auto app = Sandbox::Create({2560, 1440, "EN61"});
-	app->Start();
+	app->Run();
 	return 0;
 }

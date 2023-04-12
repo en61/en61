@@ -58,7 +58,8 @@ protected:
 
     float _move_speed = 5.f;
     float _mouse_sensivity = 0.1f;
-    float _zoom = 45.0f;
+    float _zoom = 45.f;
+    float _zoom_speed = 2.f;
 };
 
 } // namespace en61

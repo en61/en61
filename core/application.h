@@ -9,11 +9,10 @@ namespace en61 {
 class Application {
 public:
 	Application(const WindowProps &win_props = WindowProps());
-	virtual ~Application();
+	virtual ~Application() = default;
    
-	virtual void Clear();
-	virtual void Render();
-	virtual void Start();
+	virtual void OnUpdate() = 0;
+	virtual void Run();
 
 	static void PrintGLVersion();
 	static void ErrorCallback(int error, const char *description);
@@ -25,6 +24,7 @@ public:
 
 protected:
 	Ref<Window> _window;
+
 	static Application *_instance;
 };
 

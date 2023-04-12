@@ -1,6 +1,5 @@
 #include <core/resource.h>
 
-
 #include <iostream>
 #include <core/application.h>
 

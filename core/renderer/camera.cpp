@@ -54,7 +54,7 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool limit) {
 }
 
 void Camera::ProcessMouseScroll(float yoffset) {
-	_zoom -= (float)yoffset;
+	_zoom -= (float)yoffset * _zoom_speed;
 	if (_zoom < 1.0f)
 		_zoom = 1.0f;
 	if (_zoom > 45.0f)

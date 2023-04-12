@@ -15,7 +15,7 @@ public:
 	virtual void Render(const glm::mat4 &view, const glm::mat4 &projection);
 
 	void AddTexture(Ref<Texture> texture);
-	void SetMesh(Ref<IMesh> mesh);
+	void SetMesh(Ref<MeshInterface> mesh);
 	void SetShader(Ref<Shader> shader);
 	
 	glm::vec3 GetPosition() const;
@@ -24,7 +24,7 @@ public:
 protected:
 	std::vector<Ref<Texture>> _textures;
 	Ref<Shader> _shader;
-	Ref<IMesh> _mesh;
+	Ref<MeshInterface> _mesh;
 	glm::vec3 _position = { 0.f, 0.f, 0.f };
 };
 

@@ -1,20 +1,15 @@
 #pragma once
 
 #include <core/renderer/mesh.h>
+#include <core/renderer/interfaces.h>
 #include <core/renderer/vertex_array.h>
 #include <core/renderer/vertex_buffer.h>
 
 #include <string>
 
-
 namespace en61 {
 
-class IMesh {
-public:
-	virtual void Draw() = 0;
-};
-
-class Mesh: public IMesh {
+class Mesh: public MeshInterface {
 public:
 	Mesh() = default;
 

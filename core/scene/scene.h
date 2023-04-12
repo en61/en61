@@ -1,17 +1,19 @@
 #pragma once
 
 #include <core/renderer/camera.h>
+#include <core/scene/interfaces.h>
 
 namespace en61 {
 
-class Scene {
+class Scene: public SceneInterface {
 public:
     Scene(Ref<Window> window);
 
     virtual void OnEvent(Event &e);
+    virtual void OnUpdate();
 
     virtual void Clear();
-    virtual void Update();
+    virtual void UpdateCamera();
     virtual void Render();
 
     Ref<Camera> GetCamera() const { return _camera; }

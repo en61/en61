@@ -25,7 +25,7 @@ void Object::Render(const glm::mat4 &view, const glm::mat4 &projection) {
 		_mesh->Draw();
 }
 
-void Object::SetMesh(Ref<IMesh> mesh) {
+void Object::SetMesh(Ref<MeshInterface> mesh) {
 	_mesh = mesh;
 }
 

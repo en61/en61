@@ -33,11 +33,26 @@ Application::Application(const WindowProps &win_props) {
 	glfwSwapInterval(0);
 
 	InitAPI();
+
+	_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 }
 
 std::pair<int, int> Application::GetMonitorResolution() {
 	const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	return std::make_pair(mode->width, mode->height);
+}
+
+void Application::SetMainScene(Ref<SceneInterface> scene) {
+	_scene = scene;
+}
+
+void Application::OnEvent(Event &event) {
+	if (_scene)
+		_scene->OnEvent(event);
+}
+void Application::OnUpdate() {
+	if (_scene)
+		_scene->OnUpdate();
 }
 
 void Application::Run() {

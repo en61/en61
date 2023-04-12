@@ -45,8 +45,8 @@ public:
 	SandboxScene(Ref<Window> window)
 		: Scene(window) { }
 
-	void Render() override {
-		Scene::Update();
+	void OnUpdate() override {
+		Scene::UpdateCamera();
 		Scene::Clear();
 
 		auto view = Scene::GetCamera()->GetView();
@@ -76,21 +76,13 @@ protected:
 
 class Sandbox: public Application {
 public:
-
-	Sandbox(const WindowProps &props)
-		: Application(props), _scene(GetWindow()) {
-	}
-
-	void OnUpdate() override {
-		_scene.Render();
+	Sandbox(const WindowProps &props): Application(props) {
+		SetMainScene(MakeRef<SandboxScene>(GetWindow()));
 	}
 
 	static auto Create(const WindowProps &props = {}) {
 		return MakeScoped<Sandbox>(props);
 	}
-
-protected:
-	SandboxScene _scene;
 };
 
 int main() {

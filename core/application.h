@@ -3,6 +3,7 @@
 #include <core/opengl.h>
 #include <core/window.h>
 #include <core/resource.h>
+#include <core/scene/interfaces.h>
 
 namespace en61 {
 
@@ -11,7 +12,7 @@ public:
 	Application(const WindowProps &win_props = WindowProps());
 	virtual ~Application() = default;
    
-	virtual void OnUpdate() = 0;
+	void SetMainScene(Ref<SceneInterface> scene);
 	virtual void Run();
 
 	static void PrintGLVersion();
@@ -22,8 +23,13 @@ public:
 	static Application *Get() { return _instance; }
 	Ref<Window> GetWindow() const { return _window; }
 
+private:
+	virtual void OnEvent(Event &event);
+	virtual void OnUpdate(); 
+
 protected:
 	Ref<Window> _window;
+	Ref<SceneInterface> _scene;
 
 	static Application *_instance;
 };

@@ -1,13 +1,14 @@
-#include "raycast.h"
-#include "glm/geometric.hpp"
+#include <core/math/raycast.h>
+
+#include <core/controls.h>
+#include <glm/geometric.hpp>
 
 namespace en61 {
 
-glm::vec3 Raycast::CalcMouseRay() {
-	auto [xpos, ypos] = MousePosition();
+glm::vec3 Raycast::Create(float xpos, float ypos) {
 
 	// viewport coordinates
-	glm::vec2 viewport_coords = glm::vec2(static_cast<float>(xpos), static_cast<float>(ypos));
+	glm::vec2 viewport_coords = glm::vec2(xpos, ypos);
 
 	// normalized coordinates
 	glm::vec2 normalized_coords = ToNDS(viewport_coords);
@@ -22,6 +23,11 @@ glm::vec3 Raycast::CalcMouseRay() {
 	glm::vec3 world_ray = ToWorldCoords(eye_coords);
 
 	return glm::normalize(world_ray);
+}
+
+glm::vec3 Raycast::CreateFromMouse() {
+	auto [xpos, ypos] = MousePosition();
+	return Create(static_cast<float>(xpos), static_cast<float>(ypos));
 }
 
 glm::vec2 Raycast::ToNDS(glm::vec2 viewport_coords) {		 

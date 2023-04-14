@@ -14,10 +14,10 @@ public:
 	Camera(Ref<Window> window);
 
 	enum Direction {
-		FORWARD,
-		BACKWARD,
-		LEFT,
-		RIGHT
+		Forward,
+		Backward,
+		Left,
+		Right
 	};
 
 	glm::mat4 GetView();
@@ -34,6 +34,7 @@ public:
 	void OnMouseMoved(MouseMovedEvent &event);
 
 	void SetPosition(glm::vec3 pos) { _position = pos; }
+	glm::vec3 GetPosition() const { return _position; }
 
 protected:
 	void updateCameraVectors();

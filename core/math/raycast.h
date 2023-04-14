@@ -1,7 +1,6 @@
 #pragma once
 
 #include <core/opengl.h>
-#include <core/controls.h>
 #include <core/window.h>
 
 namespace en61 {
@@ -11,7 +10,8 @@ public:
 	Raycast(Ref<Window> w)
 		: _window(w) { }
 
-	glm::vec3 CalcMouseRay();
+	glm::vec3 Create(float xpos, float ypos);
+	glm::vec3 CreateFromMouse();
 
 	glm::vec2 ToNDS(glm::vec2 viewport_coords);
 	glm::vec4 ToClipCoords(glm::vec2 normalized_coords);

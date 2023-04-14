@@ -2,6 +2,8 @@
 #include <core/renderer/camera.h>
 #include <core/scene/object.h>
 #include <core/scene/scene.h>
+#include <core/math/raycast.h>
+#include <core/event/event.h>
 
 using namespace en61;
 
@@ -44,7 +46,38 @@ public:
 class SandboxScene: public Scene {
 public:
 	SandboxScene(Ref<Window> window)
-		: Scene(window) { }
+		: Scene(window), _raycast(window) {
+			_current_cube = MakeRef<Cube>();
+		}
+
+	void OnKeyPressed(KeyPressedEvent &event) {
+		if (event.GetKeycode() == GLFW_KEY_P) {
+			std::cout << "p pressed" << std::endl;
+			PlaceBlock();
+		}
+	}
+
+	void OnMousePressed(MousePressedEvent &event) {
+		if (event.GetButtonCode() == GLFW_MOUSE_BUTTON_RIGHT) {
+			std::cout << "right mouse button pressed" << std::endl;
+			PlaceBlock();
+		}
+	}
+
+	void PlaceBlock() {
+		if (_current_cube)
+			_cubes.push_back(_current_cube);
+		
+		_current_cube = MakeRef<Cube>();
+	}
+
+	void OnEvent(Event &e) override {
+		EventDispatcher ed(e);
+		ed.Register<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressed));
+		ed.Register<MousePressedEvent>(BIND_EVENT_FN(OnMousePressed));
+
+		_camera->OnEvent(e);
+	}
 
 	void OnUpdate() override {
 		Scene::UpdateCamera();
@@ -54,25 +87,28 @@ public:
 		auto proj = Scene::GetCamera()->GetProjection();
 
 		_surface.Render(view, proj);
-		
-		_cubes[0].SetPosition({2, 0.5, 0});
-		_cubes[1].SetPosition({3, 1.5, 0});
-		_cubes[2].SetPosition({4, 2.5, 0});
-		_cubes[3].SetPosition({3, 3.5, 0});
-		_cubes[4].SetPosition({2, 4.5, 0});
-		_cubes[5].SetPosition({1, 3.5, 0});
-		_cubes[6].SetPosition({0, 2.5, 0});
-		_cubes[7].SetPosition({1, 1.5, 0});
+		_raycast.UpdateData(view, proj);
 
-		for (size_t i = 0; i < 8; i++)
-			_cubes[i].Render(view, proj);
+		double x_center = _window->Width() / 2;
+		double y_center = _window->Height() / 2;
+
+		auto ray = _raycast.Create(x_center, y_center);
+		auto cubepos = _camera->GetPosition() + ray * 5.f;
+		_current_cube->SetPosition(cubepos);
+
+		_current_cube->Render(view, proj);
+
+		for (size_t i = 0; i < _cubes.size(); i++)
+			_cubes[i]->Render(view, proj);
 
 		Scene::Render();
 	}
 
 protected:
-	Cube _cubes[8];
+	std::vector<Ref<Cube>> _cubes; 
+	Ref<Cube> _current_cube;
 	Surface _surface;
+	Raycast _raycast;
 };
 
 class Sandbox: public Application {

@@ -94,10 +94,21 @@ void Window::SetupCallbacks() {
 		handle->_event_callback(event);
 	};
 
+	auto mouse_button_func = [](GLFWwindow* window, int button, int action, int mods) {
+		Window *handle = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		switch (action) {
+			case GLFW_PRESS:
+				MousePressedEvent event(button);
+				handle->_event_callback(event);
+				break;
+		}
+	};
+
 	glfwSetFramebufferSizeCallback(_handle, framebuffer_resize_func);
 	glfwSetCursorPosCallback(_handle, mouse_moved_func);
 	glfwSetKeyCallback(_handle, key_func);
 	glfwSetScrollCallback(_handle, scroll_func);
+	glfwSetMouseButtonCallback(_handle, mouse_button_func);
 }
 
 } // namespace en61

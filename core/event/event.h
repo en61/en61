@@ -15,13 +15,13 @@ public:
 	virtual const char *GetName() const = 0;
 };
 
-class Dispatcher {
+class EventDispatcher {
 public:
-	Dispatcher(Event &event)
+	EventDispatcher(Event &event)
 		: _event(event) { }
 
 	template <class _Event, class _HandleFunc>
-	bool Dispatch(const _HandleFunc &func) {
+	bool Register(const _HandleFunc &func) {
 		if (_event.GetType() == _Event::GetStaticType()) {
 			func(static_cast<_Event&>(_event));
 			return true;

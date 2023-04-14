@@ -32,4 +32,18 @@ private:
 	double _x_offset, _y_offset;
 };
 
+class MousePressedEvent: public Event {
+	META_EVENT_CLASS(MouseScrolled)
+
+public:
+	MousePressedEvent(int button)
+		: _button(button) { }
+
+	int GetButtonCode() const { return _button; }
+
+private:
+	int _button;
+};
+
+
 } // namespace en61

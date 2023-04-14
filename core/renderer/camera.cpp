@@ -5,9 +5,9 @@
 namespace en61 {
 
 void Camera::OnEvent(Event &event) {
-	Dispatcher d(event);
-	d.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScrolled));
-	d.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMoved));
+	EventDispatcher d(event);
+	d.Register<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScrolled));
+	d.Register<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMoved));
 }
 
 Camera::Camera(Ref<Window> window)
@@ -64,16 +64,16 @@ void Camera::ProcessMouseScroll(float yoffset) {
 void Camera::ProcessKeyboard(Direction direction, float delta) {
 	float velocity = _move_speed * delta;
 
-	if (direction == FORWARD)
+	if (direction == Direction::Forward)
 		_position += _front * velocity;
 
-	if (direction == BACKWARD)
+	if (direction == Direction::Backward)
 		_position -= _front * velocity;
 
-	if (direction == LEFT)
+	if (direction == Direction::Left)
 		_position -= _right * velocity;
 
-	if (direction == RIGHT)
+	if (direction == Direction::Right)
 		_position += _right * velocity;
 }
 
@@ -104,19 +104,24 @@ void Camera::ProcessInput() {
 		_window->Close();
 
 	if (IsKeyPressed(GLFW_KEY_W))
-		ProcessKeyboard(FORWARD, _delta_time);
+		ProcessKeyboard(Forward, _delta_time);
 
 	if (IsKeyPressed(GLFW_KEY_S))
-		ProcessKeyboard(BACKWARD, _delta_time);
+		ProcessKeyboard(Backward, _delta_time);
 
 	if (IsKeyPressed(GLFW_KEY_A))
-		ProcessKeyboard(LEFT, _delta_time);
+		ProcessKeyboard(Left, _delta_time);
 
 	if (IsKeyPressed(GLFW_KEY_D))
-		ProcessKeyboard(RIGHT, _delta_time);
+		ProcessKeyboard(Right, _delta_time);
 }
 
 void Camera::OnMouseScrolled(MouseScrolledEvent &event) {
+	if (std::abs(event.GetYOffset()) > 10) {
+		// skip wrong events
+		return;
+	}
+
 	ProcessMouseScroll(static_cast<float>(event.GetYOffset()));
 }
 

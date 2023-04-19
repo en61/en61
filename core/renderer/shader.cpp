@@ -5,9 +5,6 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <list>
-
-#include <glm/gtc/type_ptr.hpp>
 
 namespace en61 {
 

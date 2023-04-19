@@ -1,5 +1,4 @@
 #include <core/scene/object.h>
-#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
 namespace en61 {

@@ -1,7 +1,6 @@
 #include <core/math/raycast.h>
 
 #include <core/controls.h>
-#include <glm/geometric.hpp>
 
 namespace en61 {
 
@@ -31,10 +30,10 @@ glm::vec3 Raycast::CreateFromMouse() {
 }
 
 glm::vec2 Raycast::ToNDS(glm::vec2 viewport_coords) {		 
-	float x = (2.0f * viewport_coords.x) / _window->Width() - 1.0f;
-	float y = 1.0f - (2.0f * viewport_coords.y) / _window->Height();
+	float x = (2.f * viewport_coords.x) / _window->Width() - 1.f;
+	float y = (2.f * viewport_coords.y) / _window->Height() - 1.f;
 
-	return glm::vec2(x, y);
+	return glm::vec2(x, -y);
 }
 
 glm::vec4 Raycast::ToClipCoords(glm::vec2 normalized_coords) {
@@ -42,8 +41,8 @@ glm::vec4 Raycast::ToClipCoords(glm::vec2 normalized_coords) {
 }
 
 glm::vec4 Raycast::ToEyeCoords(glm::vec4 clip_coords) {
-	glm::mat4 inverted = glm::inverse(_proj);
-	glm::vec4 eye_coords = inverted * clip_coords;
+	glm::mat4 inverted_proj = glm::inverse(_proj);
+	glm::vec4 eye_coords = inverted_proj * clip_coords;
 	return glm::vec4(clip_coords.x, clip_coords.y, -1.f, 0.f);
 }
 

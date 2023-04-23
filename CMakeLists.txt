@@ -11,6 +11,11 @@ file(GLOB EN61_SOURCES
 	"core/*/*.cpp"
 )
 
+file(GLOB EN61_HEADER_FILES
+	"core/*.h"
+	"core/*/*.h"
+)
+
 set(EN61_INCLUDE_DIRS
 	"./"
 	"thirdparty/"
@@ -19,10 +24,10 @@ set(EN61_INCLUDE_DIRS
 option(DYNAMIC "If true a shared library will be built" OFF)
 
 if (DYNAMIC)
-	add_library(en61 SHARED ${EN61_SOURCES})
+	add_library(en61 SHARED ${EN61_SOURCES} ${EN61_HEADER_FILES})
 	message(STATUS "Building dynamic library...")
 else()
-	add_library(en61 STATIC ${EN61_SOURCES})
+	add_library(en61 STATIC ${EN61_SOURCES} ${EN61_HEADER_FILES})
 	message(STATUS "Building static library...")
 endif(DYNAMIC)
 

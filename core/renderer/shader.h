@@ -5,6 +5,7 @@
 
 #include <list>
 #include <string>
+#include <optional>
 
 namespace en61 {
 
@@ -34,7 +35,12 @@ public:
 
 	void SetMatrix4(const std::string &name, const glm::mat4 &matrix);
 	void SetVec4(const std::string &name, const glm::vec4 &vec);
+	void SetVec3(const std::string &name, const glm::vec3 &vec);
 	void SetInteger(const std::string &name, GLint value);
+	void SetFloat(const std::string &name, GLfloat value);
+
+	template <typename _Type>
+	void Set(const std::string &name, _Type type);
 
 protected:
 	void CreateShaders();
@@ -44,7 +50,7 @@ protected:
 	void CheckProgramError();
 
 	GLuint CompileShader(const std::string &code, unsigned shader_type);
-	std::string LoadShaderCode(const std::string &path);
+	std::optional<std::string> LoadShaderCode(const std::string &path);
 
 protected:
 	GLuint _id;

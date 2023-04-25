@@ -4,7 +4,6 @@
 
 #include <string>
 
-
 namespace en61 {
 
 class Texture {

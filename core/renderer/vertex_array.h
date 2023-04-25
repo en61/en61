@@ -14,6 +14,7 @@ public:
 
 	void DrawTriangles(size_t count);
 	void DrawPoints(size_t count);
+	void DrawLines(size_t count);
 
 protected:
 	GLuint _id;

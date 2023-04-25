@@ -4,6 +4,7 @@
 #include <core/renderer/texture.h>
 #include <core/renderer/mesh.h>
 #include <core/common.h>
+
 #include <vector>
 
 namespace en61 {
@@ -17,9 +18,17 @@ public:
 	void AddTexture(Ref<Texture> texture);
 	void SetMesh(Ref<MeshInterface> mesh);
 	void SetShader(Ref<Shader> shader);
-	
-	glm::vec3 GetPosition() const;
+
 	void SetPosition(const glm::vec3 &position);
+
+	void DrawMesh();
+	void DrawTextures();
+
+	glm::mat4 GetModel() const;
+	glm::vec3 GetPosition() const;
+
+	template <class _Type>
+	void SetUniform(const std::string &name, _Type value);
 
 protected:
 	std::vector<Ref<Texture>> _textures;
@@ -29,3 +38,5 @@ protected:
 };
 
 } // namespace en61
+
+#include <core/scene/object.inl>

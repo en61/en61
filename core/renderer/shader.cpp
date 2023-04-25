@@ -12,12 +12,12 @@ Shader::~Shader() {
 	glDeleteProgram(_id);
 }
 
-std::string Shader::LoadShaderCode(const std::string &path) {
+std::optional<std::string> Shader::LoadShaderCode(const std::string &path) {
 	
 	std::ifstream stream(path, std::ios::in);
 	if (!stream.is_open()) {
-		std::cerr << "cannot load shader file: " << path << std::endl;
-		return "";
+		std::cerr << "Error: cannot load shader file: " << path << std::endl;
+		return std::nullopt;
 	}
 	std::stringstream sstr;
 	sstr << stream.rdbuf();
@@ -27,8 +27,10 @@ std::string Shader::LoadShaderCode(const std::string &path) {
 
 void Shader::CreateShaders() {
 	for (auto &shader: _shaders) {
-		shader.code = LoadShaderCode(shader.path);
-		std::cout << "Loaded shader file: " << shader.path << std::endl;
+		if (auto code = LoadShaderCode(shader.path)) {
+			shader.code = code.value();
+			std::cout << "Loaded shader file: " << shader.path << std::endl;
+		}
 	}
 }
 
@@ -138,6 +140,11 @@ void Shader::SetVec4(const std::string &name, const glm::vec4 &vec) {
 	glUniform4fv(GetUniformLocation(name), 1, glm::value_ptr(vec));
 }
 
+void Shader::SetVec3(const std::string &name, const glm::vec3 &vec) {
+	Use();
+	glUniform3fv(GetUniformLocation(name), 1, glm::value_ptr(vec));
+}
+
 void Shader::SetMatrix4(const std::string &name, const glm::mat4 &matrix) {
 	Use();
 	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
@@ -147,5 +154,24 @@ void Shader::SetInteger(const std::string &name, GLint value) {
 	Use();
 	glUniform1i(GetUniformLocation(name), value);
 }
+
+void Shader::SetFloat(const std::string &name, GLfloat value) {
+	Use();
+	glUniform1f(GetUniformLocation(name), value);
+}
+
+#define UNIFORM_SETTER(_Type, setter) \
+template <> \
+void Shader::Set<_Type>(const std::string &name, _Type value) { \
+	setter(name, value); \
+}
+
+UNIFORM_SETTER(glm::mat4, SetMatrix4)
+UNIFORM_SETTER(glm::vec3, SetVec3)
+UNIFORM_SETTER(glm::vec4, SetVec4)
+UNIFORM_SETTER(GLint, SetInteger)
+UNIFORM_SETTER(GLfloat, SetFloat)
+
+#undef UNIFORM_SETTER
 
 } // namespace en61

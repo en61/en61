@@ -30,4 +30,9 @@ void VertexArray::DrawPoints(size_t count) {
 	glDrawArrays(GL_POINTS, 0, count);
 }
 
+void VertexArray::DrawLines(size_t count) {
+	this->Bind();
+	glDrawArrays(GL_LINES, 0, count);
+}
+
 } // namespace en61

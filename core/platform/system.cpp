@@ -1,4 +1,4 @@
-#include "system.h"
+#include <core/platform/system.h>
 
 #ifdef _WIN32
 #include <windows.h>

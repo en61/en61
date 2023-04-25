@@ -1,4 +1,4 @@
-#include "scene.h"
+#include <core/scene/scene.h>
 
 namespace en61 {
 

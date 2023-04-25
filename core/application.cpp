@@ -1,7 +1,8 @@
+#include <core/application.h>
+
 #include <core/renderer/api.h>
 #include <core/platform/system.h>
 #include <core/window.h>
-#include <core/application.h>
 
 #include <cassert>
 #include <utility>

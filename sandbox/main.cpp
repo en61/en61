@@ -1,9 +1,12 @@
 #include <core/application.h>
 #include <core/renderer/camera.h>
+#include <core/renderer/interfaces.h>
 #include <core/scene/object.h>
 #include <core/scene/scene.h>
+#include <core/scene/crosshair.h>
 #include <core/math/raycast.h>
 #include <core/event/event.h>
+#include <core/opengl.h>
 
 using namespace en61;
 
@@ -94,9 +97,10 @@ public:
 
 		auto ray = _raycast.Create(x_center, y_center);
 		auto cubepos = _camera->GetPosition() + ray * 5.f;
+		
 		_current_cube->SetPosition(cubepos);
-
-		_current_cube->Render(view, proj);
+		//_current_cube->Render(view, proj);
+		_crosshair.Render(view, proj);
 
 		for (size_t i = 0; i < _cubes.size(); i++)
 			_cubes[i]->Render(view, proj);
@@ -107,6 +111,7 @@ public:
 protected:
 	std::vector<Ref<Cube>> _cubes; 
 	Ref<Cube> _current_cube;
+	Crosshair _crosshair;
 	Surface _surface;
 	Raycast _raycast;
 };

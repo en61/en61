@@ -2,15 +2,15 @@
 
 #include <core/opengl.h>
 #include <core/common.h>
+#include <core/event/event.h>
+#include <core/event/mouse.h>
+#include <core/event/key.h>
+#include <core/event/system.h>
 
 #include <vector>
 #include <string>
 #include <iostream>
 #include <functional>
-#include <core/event/event.h>
-#include <core/event/mouse.h>
-#include <core/event/key.h>
-#include <core/event/system.h>
 
 namespace en61 {
 
@@ -57,7 +57,6 @@ protected:
 	EventCallbackFunc _event_callback;
 	WindowProps _properties;
 	GLFWwindow *_handle;
-
 };
 
 } // namespace en61

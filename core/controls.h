@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/opengl.h>
+
 #include <memory>
 
 namespace en61 {

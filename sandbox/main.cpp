@@ -5,10 +5,12 @@
 #include <core/scene/scene.h>
 #include <core/scene/crosshair.h>
 #include <core/math/raycast.h>
+#include <core/math/intersect.h>
 #include <core/event/event.h>
 #include <core/opengl.h>
 
 using namespace en61;
+
 
 class Cube: public Object {
 public:
@@ -18,7 +20,7 @@ public:
 		auto texture = MakeRef<Texture>();
 
 		mesh->Load("../assets/cube.obj");
-		texture->Load("../assets/cube.png");
+		texture->Load("../assets/blue_cube.png");
 		shader->Load("../assets/cube.vert", "../assets/cube.frag");
 
 		AddTexture(texture);
@@ -59,7 +61,7 @@ public:
 			PlaceBlock();
 		}
 	}
-
+	
 	void OnMousePressed(MousePressedEvent &event) {
 		if (event.GetButtonCode() == GLFW_MOUSE_BUTTON_RIGHT) {
 			std::cout << "right mouse button pressed" << std::endl;
@@ -74,10 +76,35 @@ public:
 		_current_cube = MakeRef<Cube>();
 	}
 
+	void OnMouseMoved(MouseMovedEvent &e) {
+
+		double x_center = _window->Width() / 2;
+		double y_center = _window->Height() / 2;
+		Ray ray = _raycast.Create(_camera->GetPosition(), x_center, y_center);
+
+		for (size_t i = 0; i < _cubes.size(); i++) {
+
+			auto model = _cubes[i]->GetModel();
+			AABB box = {
+				glm::vec3(model * glm::vec4(-1, -1, -1, 1)),
+				glm::vec3(model * glm::vec4(1, 1, 1, 1)),
+			};
+			
+			std::cout << "cube " << i << ":";
+			if (auto distance = GetIntersection(ray, box)) {
+				std::cout <<  " distance [" << distance.value() << "]" << std::endl;
+			} 
+			else {
+				std::cout << " no intersection" << std::endl;
+			}
+		}
+	}
+
 	void OnEvent(Event &e) override {
 		EventDispatcher ed(e);
 		ed.Register<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressed));
 		ed.Register<MousePressedEvent>(BIND_EVENT_FN(OnMousePressed));
+		ed.Register<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMoved));
 
 		_camera->OnEvent(e);
 	}
@@ -95,15 +122,16 @@ public:
 		double x_center = _window->Width() / 2;
 		double y_center = _window->Height() / 2;
 
-		auto ray = _raycast.Create(x_center, y_center);
-		auto cubepos = _camera->GetPosition() + ray * 5.f;
+		auto ray = _raycast.Create(_camera->GetPosition(), x_center, y_center);
+		auto cubepos = ray.origin + ray.direction * 5.f;
 		
 		_current_cube->SetPosition(cubepos);
 		//_current_cube->Render(view, proj);
 		_crosshair.Render(view, proj);
 
-		for (size_t i = 0; i < _cubes.size(); i++)
+		for (size_t i = 0; i < _cubes.size(); i++) {
 			_cubes[i]->Render(view, proj);
+		}
 
 		Scene::Render();
 	}

@@ -20,6 +20,7 @@ public:
 	void SetShader(Ref<Shader> shader);
 
 	void SetPosition(const glm::vec3 &position);
+	void SetScale(const glm::vec3 &scale);
 
 	void DrawMesh();
 	void DrawTextures();
@@ -34,7 +35,8 @@ protected:
 	std::vector<Ref<Texture>> _textures;
 	Ref<Shader> _shader;
 	Ref<MeshInterface> _mesh;
-	glm::vec3 _position = { 0.f, 0.f, 0.f };
+	glm::vec3 _position = { 0, 0, 0 };
+	glm::vec3 _scale = { 1, 1, 1 };
 };
 
 } // namespace en61

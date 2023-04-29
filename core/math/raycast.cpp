@@ -4,7 +4,11 @@
 
 namespace en61 {
 
-glm::vec3 Raycast::Create(float xpos, float ypos) {
+Ray Raycast::Create(glm::vec3 origin, float xpos, float ypos) {
+	return Ray{origin, GetDirection(xpos, ypos)};
+}
+
+glm::vec3 Raycast::GetDirection(float xpos, float ypos) {
 
 	// viewport coordinates
 	glm::vec2 viewport_coords = glm::vec2(xpos, ypos);
@@ -22,11 +26,6 @@ glm::vec3 Raycast::Create(float xpos, float ypos) {
 	glm::vec3 world_ray = ToWorldCoords(eye_coords);
 
 	return glm::normalize(world_ray);
-}
-
-glm::vec3 Raycast::CreateFromMouse() {
-	auto [xpos, ypos] = MousePosition();
-	return Create(static_cast<float>(xpos), static_cast<float>(ypos));
 }
 
 glm::vec2 Raycast::ToNDS(glm::vec2 viewport_coords) {		 

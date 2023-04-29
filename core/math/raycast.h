@@ -5,13 +5,18 @@
 
 namespace en61 {
 
+struct Ray {
+	glm::vec3 origin;
+	glm::vec3 direction;
+};
+
 class Raycast {
 public:
 	Raycast(Ref<Window> w)
 		: _window(w) { }
 
-	glm::vec3 Create(float xpos, float ypos);
-	glm::vec3 CreateFromMouse();
+	Ray Create(glm::vec3 origin, float xpos, float ypos);
+	glm::vec3 GetDirection(float xpos, float ypos);
 
 	glm::vec2 ToNDS(glm::vec2 viewport_coords);
 	glm::vec4 ToClipCoords(glm::vec2 normalized_coords);

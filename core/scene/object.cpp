@@ -43,7 +43,10 @@ void Object::AddTexture(Ref<Texture> texture) {
 }
 
 glm::mat4 Object::GetModel() const {
-	return glm::translate(glm::mat4(1.0f), _position);
+	auto model = glm::mat4(1.0f);
+	model = glm::translate(model, _position);
+	model = glm::scale(model, _scale);
+	return model;
 }
 
 glm::vec3 Object::GetPosition() const {
@@ -52,6 +55,10 @@ glm::vec3 Object::GetPosition() const {
 
 void Object::SetPosition(const glm::vec3 &position) {
 	_position = position;
+}
+
+void Object::SetScale(const glm::vec3 &scale) {
+	_scale = scale;
 }
 
 } // namespace en61

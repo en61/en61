@@ -11,32 +11,52 @@
 
 using namespace en61;
 
+
 class Cube: public Object {
 public:
 	Cube() {
 		auto mesh = MakeRef<Mesh>();
 		auto texture = MakeRef<Texture>();
 
-		_shader = MakeRef<Shader>();
-		_highlightShader = MakeRef<Shader>();
-
 		texture->Load("../assets/blue_cube.png");
 		mesh->Load("../assets/cube.obj");
 
+		_shader = MakeRef<Shader>();
+		_outlineShader = MakeRef<Shader>();
+
 		_shader->Load("../assets/cube.vert", "../assets/cube.frag");
-		_highlightShader->Load("../assets/cube.vert", "../assets/cube_outline.frag");
+		_outlineShader->Load("../assets/cube_outline.vert", "../assets/cube_outline.frag");
 
 		AddTexture(texture);
 		SetShader(_shader);
 		SetMesh(mesh);
 	}
 
-	void SetLineHighlight(bool enabled) {
-		SetShader(enabled ? _highlightShader : _shader);
+	void EnableOutline() {
+		SetShader(_outlineShader);
+		_outline = true;
+	}
+
+	void HideOutline() {
+		SetShader(_shader);
+		_outline = false;
+	}
+
+	void Render(const glm::mat4 &view, const glm::mat4 &projection) override{
+		if (_outline) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+
+		Object::Render(view, projection);
+
+		if (_outline) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
 	}
 
 protected:
-	Ref<Shader> _shader, _highlightShader;
+	Ref<Shader> _shader, _outlineShader;
+	bool _outline = false;
 };
 
 
@@ -103,11 +123,11 @@ public:
 			std::cout << "cube " << i << ":";
 			if (auto distance = GetIntersection(ray, box)) {
 				std::cout <<  " distance [" << distance.value() << "]" << std::endl;
-				_cubes[i]->SetLineHighlight(true);
+				_cubes[i]->EnableOutline();
 			} 
 			else {
 				std::cout << " no intersection" << std::endl;
-				_cubes[i]->SetLineHighlight(false);
+				_cubes[i]->HideOutline();
 			}
 		}
 	}

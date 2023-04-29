@@ -11,22 +11,32 @@
 
 using namespace en61;
 
-
 class Cube: public Object {
 public:
 	Cube() {
 		auto mesh = MakeRef<Mesh>();
-		auto shader = MakeRef<Shader>();
 		auto texture = MakeRef<Texture>();
 
-		mesh->Load("../assets/cube.obj");
+		_shader = MakeRef<Shader>();
+		_highlightShader = MakeRef<Shader>();
+
 		texture->Load("../assets/blue_cube.png");
-		shader->Load("../assets/cube.vert", "../assets/cube.frag");
+		mesh->Load("../assets/cube.obj");
+
+		_shader->Load("../assets/cube.vert", "../assets/cube.frag");
+		_highlightShader->Load("../assets/cube.vert", "../assets/cube_outline.frag");
 
 		AddTexture(texture);
-		SetShader(shader);
+		SetShader(_shader);
 		SetMesh(mesh);
 	}
+
+	void SetLineHighlight(bool enabled) {
+		SetShader(enabled ? _highlightShader : _shader);
+	}
+
+protected:
+	Ref<Shader> _shader, _highlightShader;
 };
 
 
@@ -93,9 +103,11 @@ public:
 			std::cout << "cube " << i << ":";
 			if (auto distance = GetIntersection(ray, box)) {
 				std::cout <<  " distance [" << distance.value() << "]" << std::endl;
+				_cubes[i]->SetLineHighlight(true);
 			} 
 			else {
 				std::cout << " no intersection" << std::endl;
+				_cubes[i]->SetLineHighlight(false);
 			}
 		}
 	}

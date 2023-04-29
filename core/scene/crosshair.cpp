@@ -15,7 +15,6 @@ CrosshairMesh::CrosshairMesh() {
 }
 
 void CrosshairMesh::Draw() {
-	_array.Bind();
 	glLineWidth(3.f);
 	_array.DrawLines(4);
 }

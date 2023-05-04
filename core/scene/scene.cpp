@@ -6,6 +6,7 @@ Scene::Scene(Ref<Window> window)
 	: _window(window) {
 
 	_camera = MakeRef<Camera>(_window);
+	_raycast = MakeRef<Raycast>(_window);
 }
 
 void Scene::OnEvent(Event &e) {
@@ -22,6 +23,10 @@ void Scene::Clear() {
 void Scene::UpdateCamera() {
 	_camera->CalcFrameTime();
 	_camera->ProcessInput();
+
+	auto view = GetCamera()->GetView();
+	auto proj = GetCamera()->GetProjection();
+	_raycast->UpdateData(view, proj);
 }
 
 void Scene::Render() {
@@ -29,5 +34,11 @@ void Scene::Render() {
 	glfwPollEvents();
 }
 
+Ray Scene::GetOrthogonalRay() const {
+	double x_center = _window->Width() / 2;
+	double y_center = _window->Height() / 2;
+
+	return _raycast->Create(_camera->GetPosition(), x_center, y_center);
+}
 
 } // namespace en61

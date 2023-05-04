@@ -11,29 +11,22 @@
 
 using namespace en61;
 
+struct CubeAssets{
+	Ref<Shader> shader, outlineShader;
+	Ref<Texture> texture;
+	Ref<Mesh> mesh;
+};
 
 class Cube: public Object {
 public:
-	Cube() {
-		auto mesh = MakeRef<Mesh>();
-		auto texture = MakeRef<Texture>();
-
-		texture->Load("../assets/blue_cube.png");
-		mesh->Load("../assets/cube.obj");
-
-		_shader = MakeRef<Shader>();
-		_outlineShader = MakeRef<Shader>();
-
-		_shader->Load("../assets/cube.vert", "../assets/cube.frag");
-		_outlineShader->Load("../assets/cube_outline.vert", "../assets/cube_outline.frag");
-
-		AddTexture(texture);
-		SetShader(_shader);
-		SetMesh(mesh);
+	Cube(CubeAssets assets): _assets(assets) {
+		AddTexture(_assets.texture);
+		SetShader(_assets.shader);
+		SetMesh(_assets.mesh);
 	}
 
 	void EnableOutline() {
-		SetShader(_outlineShader);
+		SetShader(_assets.outlineShader);
 		_outline = true;
 	}
 
@@ -44,18 +37,19 @@ public:
 
 	void Render(const glm::mat4 &view, const glm::mat4 &projection) override{
 		if (_outline) {
+			glLineWidth(5);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		}
-
-		Object::Render(view, projection);
-
-		if (_outline) {
+			SetShader(_assets.outlineShader);
+			Object::Render(view, projection);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
+
+		SetShader(_assets.shader);
+		Object::Render(view, projection);
 	}
 
 protected:
-	Ref<Shader> _shader, _outlineShader;
+	CubeAssets _assets;
 	bool _outline = false;
 };
 
@@ -80,10 +74,24 @@ public:
 
 class SandboxScene: public Scene {
 public:
-	SandboxScene(Ref<Window> window)
-		: Scene(window), _raycast(window) {
-			_current_cube = MakeRef<Cube>();
-		}
+	SandboxScene(Ref<Window> window): Scene(window) {
+		LoadAssets();
+		_current_cube = MakeRef<Cube>(_assets);
+	}
+
+	void LoadAssets() {
+		_assets.mesh = MakeRef<Mesh>();
+		_assets.texture = MakeRef<Texture>();
+
+		_assets.texture->Load("../assets/blue_cube.png");
+		_assets.mesh->Load("../assets/cube.obj");
+
+		_assets.shader = MakeRef<Shader>();
+		_assets.outlineShader = MakeRef<Shader>();
+
+		_assets.shader->Load("../assets/cube.vert", "../assets/cube.frag");
+		_assets.outlineShader->Load("../assets/cube_outline.vert", "../assets/cube_outline.frag");
+	}
 
 	void OnKeyPressed(KeyPressedEvent &event) {
 		if (event.GetKeycode() == GLFW_KEY_P) {
@@ -100,17 +108,20 @@ public:
 	}
 
 	void PlaceBlock() {
-		if (_current_cube)
+		if (_current_cube) {
+			auto ray = GetOrthogonalRay();
+			auto cubepos = ray.origin + ray.direction * 5.f;
+			
+			_current_cube->SetPosition(cubepos);
 			_cubes.push_back(_current_cube);
+		}
 		
-		_current_cube = MakeRef<Cube>();
+		_current_cube = MakeRef<Cube>(_assets);
 	}
 
-	void OnMouseMoved(MouseMovedEvent &e) {
+	void UpdateOutlineState() {
 
-		double x_center = _window->Width() / 2;
-		double y_center = _window->Height() / 2;
-		Ray ray = _raycast.Create(_camera->GetPosition(), x_center, y_center);
+		Ray ray = GetOrthogonalRay();
 
 		for (size_t i = 0; i < _cubes.size(); i++) {
 
@@ -136,7 +147,6 @@ public:
 		EventDispatcher ed(e);
 		ed.Register<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressed));
 		ed.Register<MousePressedEvent>(BIND_EVENT_FN(OnMousePressed));
-		ed.Register<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMoved));
 
 		_camera->OnEvent(e);
 	}
@@ -144,25 +154,16 @@ public:
 	void OnUpdate() override {
 		Scene::UpdateCamera();
 		Scene::Clear();
+		UpdateOutlineState();
 
 		auto view = Scene::GetCamera()->GetView();
 		auto proj = Scene::GetCamera()->GetProjection();
 
 		_surface.Render(view, proj);
-		_raycast.UpdateData(view, proj);
-
-		double x_center = _window->Width() / 2;
-		double y_center = _window->Height() / 2;
-
-		auto ray = _raycast.Create(_camera->GetPosition(), x_center, y_center);
-		auto cubepos = ray.origin + ray.direction * 5.f;
-		
-		_current_cube->SetPosition(cubepos);
-		//_current_cube->Render(view, proj);
 		_crosshair.Render(view, proj);
 
-		for (size_t i = 0; i < _cubes.size(); i++) {
-			_cubes[i]->Render(view, proj);
+		for (auto &cube: _cubes) {
+			cube->Render(view, proj);
 		}
 
 		Scene::Render();
@@ -173,7 +174,7 @@ protected:
 	Ref<Cube> _current_cube;
 	Crosshair _crosshair;
 	Surface _surface;
-	Raycast _raycast;
+	CubeAssets _assets;
 };
 
 class Sandbox: public Application {

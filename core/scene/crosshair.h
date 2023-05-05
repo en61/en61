@@ -5,9 +5,9 @@
 
 namespace en61 {
 	
-class CrosshairMesh: public MeshInterface {
+class CrosshairModel: public ModelInterface {
 public:
-	CrosshairMesh();
+	CrosshairModel();
 
 	void Draw() override;
 

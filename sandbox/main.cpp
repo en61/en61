@@ -11,10 +11,10 @@
 
 using namespace en61;
 
-struct CubeAssets{
+struct CubeAssets {
 	Ref<Shader> shader, outlineShader;
 	Ref<Texture> texture;
-	Ref<Mesh> mesh;
+	Ref<Model> model;
 };
 
 class Cube: public Object {
@@ -22,7 +22,7 @@ public:
 	Cube(CubeAssets assets): _assets(assets) {
 		AddTexture(_assets.texture);
 		SetShader(_assets.shader);
-		SetMesh(_assets.mesh);
+		SetModel(_assets.model);
 	}
 
 	void EnableOutline() {
@@ -57,15 +57,15 @@ protected:
 class Surface: public Object {
 public:
 	Surface() {
-		auto mesh = MakeRef<Mesh>();
+		auto model = MakeRef<Model>();
 		auto shader = MakeRef<Shader>();
 		auto texture = MakeRef<Texture>();
 
 		shader->Load("../assets/surface.vert", "../assets/surface.frag");
-		mesh->Load("../assets/surface.obj");
+		model->Load("../assets/surface.obj");
 		texture->Load("../assets/grass.png");
 
-		SetMesh(mesh);
+		SetModel(model);
 		SetShader(shader);
 		AddTexture(texture);
 	}
@@ -80,11 +80,11 @@ public:
 	}
 
 	void LoadAssets() {
-		_assets.mesh = MakeRef<Mesh>();
+		_assets.model = MakeRef<Model>();
 		_assets.texture = MakeRef<Texture>();
 
 		_assets.texture->Load("../assets/blue_cube.png");
-		_assets.mesh->Load("../assets/cube.obj");
+		_assets.model->Load("../assets/cube.obj");
 
 		_assets.shader = MakeRef<Shader>();
 		_assets.outlineShader = MakeRef<Shader>();

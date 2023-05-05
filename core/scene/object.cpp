@@ -12,7 +12,7 @@ void Object::Render(const glm::mat4 &view, const glm::mat4 &projection) {
 	SetUniform("colorTexture", 0);
 
 	DrawTextures();
-	DrawMesh();
+	DrawModel();
 }
 
 void Object::DrawTextures() {
@@ -21,13 +21,13 @@ void Object::DrawTextures() {
 	}
 }
 
-void Object::DrawMesh() {
-	assert(_mesh && "mesh=null");
-	_mesh->Draw();
+void Object::DrawModel() {
+	assert(_model && "model=null");
+	_model->Draw();
 }
 
-void Object::SetMesh(Ref<MeshInterface> mesh) {
-	_mesh = mesh;
+void Object::SetModel(Ref<ModelInterface> model) {
+	_model = model;
 }
 
 void Object::SetShader(Ref<Shader> shader) {

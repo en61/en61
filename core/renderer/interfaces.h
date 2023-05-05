@@ -2,7 +2,7 @@
 
 namespace en61 {
 
-class MeshInterface {
+class ModelInterface {
 public:
 	virtual void Draw() = 0;
 };

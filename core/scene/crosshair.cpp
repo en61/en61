@@ -2,7 +2,7 @@
 
 namespace en61 {
 
-CrosshairMesh::CrosshairMesh() {
+CrosshairModel::CrosshairModel() {
 	_data = {
 		-0.02, 0, 0.02, 0,
 		0, -0.04, 0, 0.04,
@@ -14,7 +14,7 @@ CrosshairMesh::CrosshairMesh() {
 	_array.Unbind();
 }
 
-void CrosshairMesh::Draw() {
+void CrosshairModel::Draw() {
 	glLineWidth(3.f);
 	_array.DrawLines(4);
 }
@@ -22,17 +22,17 @@ void CrosshairMesh::Draw() {
 
 Crosshair::Crosshair() {
 	auto shader = MakeRef<Shader>();
-	auto mesh = MakeRef<CrosshairMesh>();
+	auto model = MakeRef<CrosshairModel>();
 
 	shader->Load("../../assets/crosshair.vert", "../../assets/crosshair.frag");
 
 	SetShader(shader);
-	SetMesh(mesh);
+	SetModel(model);
 }
 
 void Crosshair::Render(const glm::mat4 &view, const glm::mat4 &proj) {
 	SetUniform("color", _color);
-	DrawMesh();
+	DrawModel();
 }
 
 void Crosshair::SetColor(glm::vec3 color) {

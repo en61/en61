@@ -1,120 +1,43 @@
 #include <core/renderer/mesh.h>
-#include <core/resource.h>
 
-#include <fstream>
-#include <vector>
-#include <sstream>
 #include <iostream>
-#include <algorithm>
 
 namespace en61 {
 
-void Mesh::Load(const std::string &path) {
-	std::ifstream ifs(path);
 
-	if (!ifs.is_open()) {
-		std::cerr << "Mesh not found: " << path << std::endl;
-	}
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned> indices, std::vector<Texture> textures)
+	: _vertices(vertices), _indices(indices), _textures(textures) {
 
-	std::vector<glm::vec3> temp_positions;
-	std::vector<glm::vec3> temp_normals;	
-	std::vector<glm::vec2> temp_uvs;
+	_array = MakeRef<VertexArray>();
+	_vertexBuffer = MakeRef<VertexBuffer>(GL_ARRAY_BUFFER);
+	_indexBuffer = MakeRef<VertexBuffer>(GL_ELEMENT_ARRAY_BUFFER);
 
-	std::vector<glm::vec3> tangents;
-	std::vector<glm::vec3> positions;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec2> uvs;
+	_array->Bind();
 
-	std::string line;
+	_vertexBuffer->Set(_vertices);
+	_indexBuffer->Set(_indices);
 
-	while (std::getline(ifs, line)) {
+	_vertexBuffer->EnableAttribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	_vertexBuffer->EnableAttribute(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	_vertexBuffer->EnableAttribute(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
-		std::stringstream ss(line);
-		std::string type; ss >> type;
-
-		if (type == "v") {
-			float x, y, z;
-			ss >> x >> y >> z;
-			temp_positions.emplace_back(x, y, z);
-		}
-		else if (type == "vt") {
-			float x, y;
-			ss >> x >> y;
-			// Note: do not invert y if you want to use TGA or BMP loaders
-			temp_uvs.emplace_back(x, -y);
-		}
-		else if (type == "vn") {
-			float x, y, z;
-			ss >> x >> y >> z;
-			temp_normals.emplace_back(x, y, z);
-		}
-		else if (type == "f") {
-			std::string copy = ss.str();
-			copy.erase(0, 2);
-			std::replace(copy.begin(), copy.end(), '/', ' ');
-			ss = std::stringstream(copy);
-
-			size_t pos_id, uv_id, norm_id;
-			for (size_t i = 0; i < 3; i++) {
-				ss >> pos_id >> uv_id >> norm_id;
-
-				positions.push_back(temp_positions[pos_id - 1]);
-				uvs.push_back(temp_uvs[uv_id - 1]);
-				normals.push_back(temp_normals[norm_id - 1]);
-			}
-		}
-	}
-	ifs.close();
-	_vnum = positions.size();
-
-	// generating tangents
-	for (size_t i = 0; i < _vnum; i += 3) {
-
-		glm::vec3 edge_1 = positions[i + 1] - positions[i];
-		glm::vec3 edge_2 = positions[i + 2] - positions[i];
-		float delta_u1 = uvs[i + 1].x - uvs[i].x;
-		float delta_v1 = uvs[i + 1].y - uvs[i].y;
-		float delta_u2 = uvs[i + 2].x - uvs[i].x;
-		float delta_v2 = uvs[i + 2].y - uvs[i].y;
-
-		float scalar_fraction = 1.0f / (delta_u1 * delta_v2 - delta_u2 * delta_v1);
-
-		glm::vec3 tangent;
-		tangent.x = scalar_fraction * (delta_v2 * edge_1.x - delta_v1 * edge_2.x);
-		tangent.y = scalar_fraction * (delta_v2 * edge_1.y - delta_v1 * edge_2.y);
-		tangent.z = scalar_fraction * (delta_v2 * edge_1.z - delta_v1 * edge_2.z);
-		glm::normalize(tangent);
-
-		tangents.push_back(tangent);
-		tangents.push_back(tangent);
-		tangents.push_back(tangent);
-	}
-
-	// setting vertex array
-	_array.Bind();
-
-	_position_buffer.Set(positions);
-	_position_buffer.EnableAttribute(0, 3);
-
-	_normal_buffer.Set(normals);
-	_normal_buffer.EnableAttribute(1, 3);
-
-	_uv_buffer.Set(uvs);
-	_uv_buffer.EnableAttribute(2, 2);
-
-	_tangent_buffer.Set(tangents);
-	_tangent_buffer.EnableAttribute(3, 3);
-
-	_array.Unbind();
-
-	_position_buffer.DisableAttribute(0);
-	_normal_buffer.DisableAttribute(1);
-	_uv_buffer.DisableAttribute(2);
-	_tangent_buffer.DisableAttribute(3);
+	_array->Unbind();
 }
 
 void Mesh::Draw() {
-	_array.DrawTriangles(_vnum);
+	size_t diffuseNr = 1;
+	size_t specularNr = 1;
+
+	for(size_t i = 0; i < _textures.size(); i++) {
+		// todo: Use Texture
+	}
+
+	_array->Bind();
+	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);
+
+	_array->Unbind();
+
+	glActiveTexture(GL_TEXTURE0);
 }
 
 } // namespace en61

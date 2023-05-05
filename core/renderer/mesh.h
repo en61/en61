@@ -1,29 +1,32 @@
 #pragma once
 
-#include <core/renderer/mesh.h>
-#include <core/renderer/interfaces.h>
 #include <core/renderer/vertex_array.h>
 #include <core/renderer/vertex_buffer.h>
+#include <core/renderer/texture.h>
+#include <core/common.h>
 
-#include <string>
 
 namespace en61 {
 
-class Mesh: public MeshInterface {
-public:
-	Mesh() = default;
+struct Vertex {
+	glm::vec3 position;
+	glm::vec3 normal;
+	glm::vec2 texCoords;
+};
 
-	void Load(const std::string &path);
+class Mesh {
+public:
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned> indices, std::vector<Texture> textures);
 	void Draw();
 
 protected:
-	size_t _vnum{0};
-	VertexArray _array;
+	Ref<VertexArray> _array;
+	Ref<VertexBuffer> _vertexBuffer, _indexBuffer;
 
-	VertexBuffer _position_buffer;
-	VertexBuffer _normal_buffer;
-	VertexBuffer _uv_buffer;
-	VertexBuffer _tangent_buffer;
+	std::vector<Vertex> _vertices;
+	std::vector<unsigned> _indices;
+	std::vector<Texture> _textures;
+
 };
 
 } // namespace en61

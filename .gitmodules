@@ -2,5 +2,5 @@
     path = thirdparty/glfw/glfw
 	url = https://github.com/glfw/glfw.git
 [submodule "thirdparty/assimp"]
-	path = thirdparty/assimp
+	path = thirdparty/assimp/assimp
 	url = https://github.com/assimp/assimp.git

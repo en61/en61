@@ -35,7 +35,7 @@ add_subdirectory(thirdparty/glfw/)
 add_subdirectory(thirdparty/glad/)
 add_subdirectory(thirdparty/stb/)
 add_subdirectory(thirdparty/glm/)
-add_subdirectory(thirdparty/assimp/assimp/)
+add_subdirectory(thirdparty/assimp/)
 
 target_link_libraries(en61 glfw glad stb glm assimp)
 

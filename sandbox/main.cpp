@@ -119,7 +119,10 @@ public:
 		_current_cube = MakeRef<Cube>(_assets);
 	}
 
-	void UpdateOutlineState() {
+	std::optional<size_t> GetTargetedCube() {
+
+		using Collision = std::pair<size_t, double>;
+		std::list<Collision> collisions;
 
 		Ray ray = GetOrthogonalRay();
 
@@ -131,15 +134,34 @@ public:
 				glm::vec3(model * glm::vec4(1, 1, 1, 1)),
 			};
 			
-			std::cout << "cube " << i << ":";
 			if (auto distance = GetIntersection(ray, box)) {
-				std::cout <<  " distance [" << distance.value() << "]" << std::endl;
-				_cubes[i]->EnableOutline();
+				collisions.emplace_back(i, distance.value());
 			} 
-			else {
-				std::cout << " no intersection" << std::endl;
-				_cubes[i]->HideOutline();
+		}
+		if (collisions.empty())
+			return std::nullopt;
+	
+		double minDist = std::numeric_limits<double>::max();
+		size_t minCollisionId = 0;
+		for (auto &collision: collisions) {
+			if (std::abs(collision.second) < minDist) {
+				minDist = std::abs(collision.second);
+				minCollisionId = collision.first;
 			}
+		}
+		return minCollisionId;
+	}
+
+	void UpdateOutlineState() {
+		auto newTarget = GetTargetedCube();
+		if (newTarget != _target) {
+			if (_target)
+				_cubes[_target.value()]->HideOutline();
+
+			if (newTarget)
+				_cubes[newTarget.value()]->EnableOutline();
+
+			_target = newTarget;
 		}
 	}
 
@@ -170,7 +192,8 @@ public:
 	}
 
 protected:
-	std::vector<Ref<Cube>> _cubes; 
+	std::vector<Ref<Cube>> _cubes;
+	std::optional<size_t> _target;
 	Ref<Cube> _current_cube;
 	Crosshair _crosshair;
 	Surface _surface;

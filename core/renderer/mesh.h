@@ -5,7 +5,6 @@
 #include <core/renderer/texture.h>
 #include <core/common.h>
 
-
 namespace en61 {
 
 struct Vertex {

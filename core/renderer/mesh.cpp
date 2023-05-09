@@ -1,7 +1,5 @@
 #include <core/renderer/mesh.h>
 
-#include <iostream>
-
 namespace en61 {
 
 

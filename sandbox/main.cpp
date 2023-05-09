@@ -35,7 +35,7 @@ public:
 		_outline = false;
 	}
 
-	void Render(const glm::mat4 &view, const glm::mat4 &projection) override{
+	void Render(const glm::mat4 &view, const glm::mat4 &projection) override {
 		if (_outline) {
 			glLineWidth(5);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -210,6 +210,7 @@ public:
 		return MakeScoped<Sandbox>(props);
 	}
 };
+
 
 int main() {
 	auto app = Sandbox::Create({2560, 1440, "EN61"});

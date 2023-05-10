@@ -4,8 +4,7 @@
 #include <core/scene/object.h>
 #include <core/scene/scene.h>
 #include <core/scene/crosshair.h>
-#include <core/math/raycast.h>
-#include <core/math/intersect.h>
+#include <core/math/collision.h>
 #include <core/event/event.h>
 #include <core/opengl.h>
 
@@ -17,7 +16,7 @@ struct CubeAssets {
 	Ref<Model> model;
 };
 
-class Cube: public Object {
+class Cube: public Object, public Collidable {
 public:
 	Cube(CubeAssets assets): _assets(assets) {
 		AddTexture(_assets.texture);
@@ -33,6 +32,13 @@ public:
 	void HideOutline() {
 		SetShader(_shader);
 		_outline = false;
+	}
+
+	AABB GetBox() const override {
+		auto model = GetModel();
+		auto min = glm::vec3(model * glm::vec4(-1, -1, -1, 1));
+		auto max = glm::vec3(model * glm::vec4(1, 1, 1, 1));
+		return { min, max };
 	}
 
 	void Render(const glm::mat4 &view, const glm::mat4 &projection) override {
@@ -119,41 +125,9 @@ public:
 		_current_cube = MakeRef<Cube>(_assets);
 	}
 
-	std::optional<size_t> GetTargetedCube() {
-
-		using Collision = std::pair<size_t, double>;
-		std::list<Collision> collisions;
-
-		Ray ray = GetOrthogonalRay();
-
-		for (size_t i = 0; i < _cubes.size(); i++) {
-
-			auto model = _cubes[i]->GetModel();
-			AABB box = {
-				glm::vec3(model * glm::vec4(-1, -1, -1, 1)),
-				glm::vec3(model * glm::vec4(1, 1, 1, 1)),
-			};
-			
-			if (auto distance = GetIntersection(ray, box)) {
-				collisions.emplace_back(i, distance.value());
-			} 
-		}
-		if (collisions.empty())
-			return std::nullopt;
-	
-		double minDist = std::numeric_limits<double>::max();
-		size_t minCollisionId = 0;
-		for (auto &collision: collisions) {
-			if (std::abs(collision.second) < minDist) {
-				minDist = std::abs(collision.second);
-				minCollisionId = collision.first;
-			}
-		}
-		return minCollisionId;
-	}
-
 	void UpdateOutlineState() {
-		auto newTarget = GetTargetedCube();
+		auto newTarget = GetNearestCollisionTarget(_cubes, GetOrthogonalRay());
+
 		if (newTarget != _target) {
 			if (_target)
 				_cubes[_target.value()]->HideOutline();

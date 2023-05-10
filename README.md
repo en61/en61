@@ -1,6 +1,6 @@
 # EN61
 
-A graphics/game engine written in c++17.
+A graphics/game engine written in c++20.
 
 # Compilation
 

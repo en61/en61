@@ -127,8 +127,8 @@ public:
 
 	void UpdateOutlineState() {
 
-		std::vector<Ref<Collidable>> cc = { _cubes.begin(), _cubes.end() };
-		auto newTarget = GetNearestCollisionTarget(cc, GetOrthogonalRay());
+		std::vector<Ref<Collidable>> targets = { _cubes.begin(), _cubes.end() };
+		auto newTarget = GetNearestCollisionTarget(targets, GetOrthogonalRay());
 
 		if (newTarget != _target) {
 			if (_target)

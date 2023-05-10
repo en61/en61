@@ -10,7 +10,6 @@ public:
 	virtual AABB GetBox() const = 0; 
 };
 
-
 std::optional<size_t> GetNearestCollisionTarget(std::vector<Ref<Collidable>> targets, Ray ray);
 
 } // namespace en61

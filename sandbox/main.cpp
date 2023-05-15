@@ -14,6 +14,44 @@ struct CubeAssets {
 	Ref<Shader> shader, outlineShader;
 	Ref<Texture> texture;
 	Ref<Model> model;
+
+	CubeAssets() {
+		model = MakeRef<Model>();
+		texture = MakeRef<Texture>();
+
+		texture->Load("../assets/blue_cube.png");
+		model->Load("../assets/cube.obj");
+
+		shader = MakeRef<Shader>();
+		outlineShader = MakeRef<Shader>();
+
+		shader->Load("../assets/cube.vert", "../assets/cube.frag");
+		outlineShader->Load("../assets/cube_outline.vert", "../assets/cube_outline.frag");
+	}
+};
+
+struct TreeAssets {
+	Ref<Shader> shader;
+	Ref<Model> model;
+
+	TreeAssets() {
+		shader = MakeRef<Shader>();
+		model = MakeRef<Model>();
+
+		shader->Load("../assets/tree.vert", "../assets/tree.frag");
+		model->Load("../assets/tree.obj");
+	}
+};
+
+class Tree: public Object {
+public:
+	Tree(TreeAssets assets): _assets(assets) {
+		SetShader(assets.shader);
+		SetModel(assets.model);
+	}
+
+protected:
+	TreeAssets _assets;
 };
 
 class Cube: public Object, public Collidable {
@@ -81,22 +119,11 @@ public:
 class SandboxScene: public Scene {
 public:
 	SandboxScene(Ref<Window> window): Scene(window) {
-		LoadAssets();
-		_current_cube = MakeRef<Cube>(_assets);
+		_current_cube = MakeRef<Cube>(_cubeAssets);
+		_tree = MakeRef<Tree>(_treeAssets);
 	}
 
 	void LoadAssets() {
-		_assets.model = MakeRef<Model>();
-		_assets.texture = MakeRef<Texture>();
-
-		_assets.texture->Load("../assets/blue_cube.png");
-		_assets.model->Load("../assets/cube.obj");
-
-		_assets.shader = MakeRef<Shader>();
-		_assets.outlineShader = MakeRef<Shader>();
-
-		_assets.shader->Load("../assets/cube.vert", "../assets/cube.frag");
-		_assets.outlineShader->Load("../assets/cube_outline.vert", "../assets/cube_outline.frag");
 	}
 
 	void OnKeyPressed(KeyPressedEvent &event) {
@@ -122,7 +149,7 @@ public:
 			_cubes.push_back(_current_cube);
 		}
 		
-		_current_cube = MakeRef<Cube>(_assets);
+		_current_cube = MakeRef<Cube>(_cubeAssets);
 	}
 
 	void UpdateOutlineState() {
@@ -143,8 +170,8 @@ public:
 
 	void OnEvent(Event &e) override {
 		EventDispatcher ed(e);
-		ed.Register<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressed));
-		ed.Register<MousePressedEvent>(BIND_EVENT_FN(OnMousePressed));
+		ed.Handle<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressed));
+		ed.Handle<MousePressedEvent>(BIND_EVENT_FN(OnMousePressed));
 
 		_camera->OnEvent(e);
 	}
@@ -158,6 +185,7 @@ public:
 		auto proj = Scene::GetCamera()->GetProjection();
 
 		_surface.Render(view, proj);
+		_tree->Render(view, proj);
 		_crosshair.Render(view, proj);
 
 		for (auto &cube: _cubes) {
@@ -173,7 +201,9 @@ protected:
 	Ref<Cube> _current_cube;
 	Crosshair _crosshair;
 	Surface _surface;
-	CubeAssets _assets;
+	CubeAssets _cubeAssets;
+	TreeAssets _treeAssets;
+	Ref<Tree> _tree;
 };
 
 class Sandbox: public Application {

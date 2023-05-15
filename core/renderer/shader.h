@@ -1,11 +1,11 @@
 #pragma once
 
 #include <core/opengl.h>
-#include <core/renderer/shader.h>
 
 #include <list>
 #include <string>
 #include <optional>
+#include <iostream>
 
 namespace en61 {
 
@@ -33,14 +33,8 @@ public:
 	void Load(const std::string &vpath, const std::string &fpath);
 	void Load(const std::string &vpath, const std::string &fpath, const std::string &gpath);
 
-	void SetMatrix4(const std::string &name, const glm::mat4 &matrix);
-	void SetVec4(const std::string &name, const glm::vec4 &vec);
-	void SetVec3(const std::string &name, const glm::vec3 &vec);
-	void SetInteger(const std::string &name, GLint value);
-	void SetFloat(const std::string &name, GLfloat value);
-
 	template <typename _Type>
-	void Set(const std::string &name, _Type type);
+	void Set(const std::string &name, const _Type &type);
 
 protected:
 	void CreateShaders();
@@ -56,5 +50,6 @@ protected:
 	GLuint _id;
 	std::list<ShaderFile> _shaders;
 };
+
 
 } // namespace en61

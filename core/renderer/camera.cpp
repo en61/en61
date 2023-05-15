@@ -4,8 +4,8 @@ namespace en61 {
 
 void Camera::OnEvent(Event &event) {
 	EventDispatcher d(event);
-	d.Register<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScrolled));
-	d.Register<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMoved));
+	d.Handle<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScrolled));
+	d.Handle<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMoved));
 }
 
 Camera::Camera(Ref<Window> window)

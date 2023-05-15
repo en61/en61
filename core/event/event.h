@@ -21,7 +21,7 @@ public:
 		: _event(event) { }
 
 	template <class _Event, class _HandleFunc>
-	bool Register(const _HandleFunc &func) {
+	bool Handle(const _HandleFunc &func) {
 		if (_event.GetType() == _Event::GetStaticType()) {
 			func(static_cast<_Event&>(_event));
 			return true;

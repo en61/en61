@@ -135,43 +135,39 @@ void Shader::Load(const std::string &vpath, const std::string &fpath, const std:
 	CompileShaders();	
 }
 
-void Shader::SetVec4(const std::string &name, const glm::vec4 &vec) {
+template <typename _Type>
+void Shader::Set(const std::string &name, const _Type &type) {
+	std::cerr << "No uniform setter for " << typeid(_Type).name() << " type found!" << std::endl;
+}
+
+template <>
+void Shader::Set(const std::string &name, const glm::vec4 &vec) {
 	Use();
 	glUniform4fv(GetUniformLocation(name), 1, glm::value_ptr(vec));
 }
 
-void Shader::SetVec3(const std::string &name, const glm::vec3 &vec) {
+template <>
+void Shader::Set(const std::string &name, const glm::vec3 &vec) {
 	Use();
 	glUniform3fv(GetUniformLocation(name), 1, glm::value_ptr(vec));
 }
 
-void Shader::SetMatrix4(const std::string &name, const glm::mat4 &matrix) {
+template <>
+void Shader::Set(const std::string &name, const glm::mat4 &matrix) {
 	Use();
 	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
-void Shader::SetInteger(const std::string &name, GLint value) {
-	Use();
-	glUniform1i(GetUniformLocation(name), value);
-}
-
-void Shader::SetFloat(const std::string &name, GLfloat value) {
+template <>
+void Shader::Set(const std::string &name, const GLfloat &value) {
 	Use();
 	glUniform1f(GetUniformLocation(name), value);
 }
 
-#define UNIFORM_SETTER(_Type, setter) \
-template <> \
-void Shader::Set<_Type>(const std::string &name, _Type value) { \
-	setter(name, value); \
+template <>
+void Shader::Set(const std::string &name, const GLint &value) {
+	Use();
+	glUniform1i(GetUniformLocation(name), value);
 }
-
-UNIFORM_SETTER(glm::mat4, SetMatrix4)
-UNIFORM_SETTER(glm::vec3, SetVec3)
-UNIFORM_SETTER(glm::vec4, SetVec4)
-UNIFORM_SETTER(GLint, SetInteger)
-UNIFORM_SETTER(GLfloat, SetFloat)
-
-#undef UNIFORM_SETTER
 
 } // namespace en61

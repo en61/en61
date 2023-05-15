@@ -16,7 +16,7 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType 
 		aiString str;
 		mat->GetTexture(type, i, &str);
 		Texture texture;
-		texture.Load(std::string(str.C_Str()) + "/" + _dir);
+		texture.Load(_dir + "/" + str.C_Str());
 		textures.push_back(texture);
 	}
 	return textures;
@@ -30,8 +30,8 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
 	for (size_t i = 0; i < mesh->mNumVertices; i++) {
 		Vertex vertex;
 
-		auto &vertice = mesh->mVertices[i];
-		vertex.position = glm::vec3(vertice.x, vertice.y, vertice.z);
+		auto &vert= mesh->mVertices[i];
+		vertex.position = glm::vec3(vert.x, vert.y, vert.z);
 
 		auto &normal = mesh->mNormals[i];
 		vertex.normal = glm::vec3(normal.x, normal.y, normal.z);

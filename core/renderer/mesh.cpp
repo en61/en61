@@ -27,7 +27,7 @@ void Mesh::Draw() {
 	size_t specularNr = 1;
 
 	for(size_t i = 0; i < _textures.size(); i++) {
-		// todo: Use Texture
+		_textures[i].Bind(i);
 	}
 
 	_array->Bind();

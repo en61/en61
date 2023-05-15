@@ -20,8 +20,8 @@ public:
 		Right
 	};
 
-	glm::mat4 GetView();
-	glm::mat4 GetProjection();
+	glm::mat4 GetViewMatrix();
+	glm::mat4 GetProjectionMatrix();
 
 	void CalcFrameTime();
 	void ProcessInput();

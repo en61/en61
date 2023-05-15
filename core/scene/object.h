@@ -25,11 +25,19 @@ public:
 	void DrawModel();
 	void DrawTextures();
 
-	glm::mat4 GetModel() const;
+	glm::mat4 GetModelMatrix() const;
 	glm::vec3 GetPosition() const;
 
+	bool HasShader() const;
+	bool HasModel() const;
+
+	Ref<Shader> GetShader() const;
+	Ref<ModelInterface> GetModel() const;
+
 	template <class _Type>
-	void SetUniform(const std::string &name, _Type value);
+	void SetUniform(const std::string &name, _Type value) {
+		GetShader()->SetUniform<_Type>(name, value);
+	}
 
 protected:
 	std::vector<Ref<Texture>> _textures;
@@ -40,5 +48,3 @@ protected:
 };
 
 } // namespace en61
-
-#include <core/scene/object.inl>

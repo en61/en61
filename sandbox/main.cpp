@@ -73,7 +73,7 @@ public:
 	}
 
 	AABB GetBox() const override {
-		auto model = GetModel();
+		auto model = GetModelMatrix();
 		auto min = glm::vec3(model * glm::vec4(-1, -1, -1, 1));
 		auto max = glm::vec3(model * glm::vec4(1, 1, 1, 1));
 		return { min, max };
@@ -181,8 +181,8 @@ public:
 		Scene::Clear();
 		UpdateOutlineState();
 
-		auto view = Scene::GetCamera()->GetView();
-		auto proj = Scene::GetCamera()->GetProjection();
+		auto view = Scene::GetCamera()->GetViewMatrix();
+		auto proj = Scene::GetCamera()->GetProjectionMatrix();
 
 		_surface.Render(view, proj);
 		_tree->Render(view, proj);

@@ -24,7 +24,7 @@ Camera::Camera(Ref<Window> window)
 	updateCameraVectors();
 }
 
-glm::mat4 Camera::GetView() {
+glm::mat4 Camera::GetViewMatrix() {
 	return glm::lookAt(_position, _position + _front, _up);
 }
 
@@ -88,7 +88,7 @@ void Camera::updateCameraVectors() {
 	_up = glm::normalize(glm::cross(_right, _front));
 }
 
-glm::mat4 Camera::GetProjection() {
+glm::mat4 Camera::GetProjectionMatrix() {
 	static constexpr float znear = 0.1f;
 	static constexpr float zfar = 100.f;
 

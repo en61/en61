@@ -5,7 +5,6 @@
 #include <list>
 #include <string>
 #include <optional>
-#include <iostream>
 
 namespace en61 {
 
@@ -34,7 +33,9 @@ public:
 	void Load(const std::string &vpath, const std::string &fpath, const std::string &gpath);
 
 	template <typename _Type>
-	void Set(const std::string &name, const _Type &type);
+	void SetUniform(const std::string &name, const _Type &type) {
+		WrongTypeUniform(typeid(_Type));
+	}
 
 protected:
 	void CreateShaders();
@@ -42,6 +43,8 @@ protected:
 
 	void CheckShaderError(const GLuint id);
 	void CheckProgramError();
+
+	void WrongTypeUniform(const std::type_info &info);
 
 	GLuint CompileShader(const std::string &code, unsigned shader_type);
 	std::optional<std::string> LoadShaderCode(const std::string &path);

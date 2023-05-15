@@ -6,7 +6,7 @@ namespace en61 {
 
 void Object::Render(const glm::mat4 &view, const glm::mat4 &projection) {
 
-	SetUniform("model", GetModel());
+	SetUniform("model", GetModelMatrix());
 	SetUniform("view", view);
 	SetUniform("projection", projection);
 	SetUniform("colorTexture", 0);
@@ -21,9 +21,26 @@ void Object::DrawTextures() {
 	}
 }
 
+bool Object::HasShader() const {
+	return static_cast<bool>(_shader);
+}
+
+bool Object::HasModel() const {
+	return static_cast<bool>(_model);
+}
+
+Ref<Shader> Object::GetShader() const {
+	assert(HasShader() && "shader=null");
+	return _shader;
+}
+
+Ref<ModelInterface> Object::GetModel() const {
+	assert(HasModel() && "model=null");
+	return _model;
+}
+
 void Object::DrawModel() {
-	assert(_model && "model=null");
-	_model->Draw();
+	GetModel()->Draw();
 }
 
 void Object::SetModel(Ref<ModelInterface> model) {
@@ -42,7 +59,7 @@ void Object::AddTexture(Ref<Texture> texture) {
 	_textures.push_back(texture);
 }
 
-glm::mat4 Object::GetModel() const {
+glm::mat4 Object::GetModelMatrix() const {
 	auto model = glm::mat4(1.0f);
 	model = glm::translate(model, _position);
 	model = glm::scale(model, _scale);

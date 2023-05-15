@@ -24,8 +24,8 @@ void Scene::UpdateCamera() {
 	_camera->CalcFrameTime();
 	_camera->ProcessInput();
 
-	auto view = GetCamera()->GetView();
-	auto proj = GetCamera()->GetProjection();
+	auto view = GetCamera()->GetViewMatrix();
+	auto proj = GetCamera()->GetProjectionMatrix();
 	_raycast->UpdateData(view, proj);
 }
 

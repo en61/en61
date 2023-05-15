@@ -1,11 +1,11 @@
 #pragma once
 
-#include <core/renderer/interfaces.h>
+#include <core/renderer/model.h>
 #include <core/scene/object.h>
 
 namespace en61 {
 	
-class CrosshairModel: public ModelInterface {
+class CrosshairModel: public ModelBase {
 public:
 	CrosshairModel();
 

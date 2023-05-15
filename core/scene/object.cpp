@@ -34,7 +34,7 @@ Ref<Shader> Object::GetShader() const {
 	return _shader;
 }
 
-Ref<ModelInterface> Object::GetModel() const {
+Ref<ModelBase> Object::GetModel() const {
 	assert(HasModel() && "model=null");
 	return _model;
 }
@@ -43,7 +43,7 @@ void Object::DrawModel() {
 	GetModel()->Draw();
 }
 
-void Object::SetModel(Ref<ModelInterface> model) {
+void Object::SetModel(Ref<ModelBase> model) {
 	_model = model;
 }
 

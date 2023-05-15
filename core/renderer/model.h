@@ -1,14 +1,18 @@
 #pragma once
 
 #include <core/renderer/mesh.h>
-#include <core/renderer/interfaces.h>
 
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
 namespace en61 {
 
-class Model: public ModelInterface {
+class ModelBase {
+public:
+	virtual void Draw() = 0;
+};
+
+class Model: public ModelBase {
 public:
 	Model(const std::string &path);
 	Model() = default;

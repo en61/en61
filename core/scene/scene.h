@@ -1,12 +1,12 @@
 #pragma once
 
+#include <core/application.h>
 #include <core/renderer/camera.h>
-#include <core/scene/interfaces.h>
 #include <core/math/raycast.h>
 
 namespace en61 {
 
-class Scene: public SceneInterface {
+class Scene: public ApplicationSceneBase {
 public:
 	Scene(Ref<Window> window);
 

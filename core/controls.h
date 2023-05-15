@@ -6,9 +6,13 @@
 
 namespace en61 {
 
-std::pair<double, double> MousePosition();
-
-void SetMousePosition(double width, double height);
+struct MousePosition {
+	double x;
+	double y;
+	
+	static MousePosition Get();
+	static void Set(const MousePosition &pos);
+};
 
 bool IsKeyPressed(int key);
 

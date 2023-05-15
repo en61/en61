@@ -1,6 +1,5 @@
 #include <core/application.h>
 #include <core/renderer/camera.h>
-#include <core/renderer/interfaces.h>
 #include <core/scene/object.h>
 #include <core/scene/scene.h>
 #include <core/scene/crosshair.h>

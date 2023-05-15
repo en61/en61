@@ -43,7 +43,7 @@ std::pair<int, int> Application::GetMonitorResolution() {
 	return std::make_pair(mode->width, mode->height);
 }
 
-void Application::SetMainScene(Ref<SceneInterface> scene) {
+void Application::SetMainScene(Ref<ApplicationSceneBase> scene) {
 	_scene = scene;
 }
 

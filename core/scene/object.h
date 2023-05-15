@@ -16,7 +16,7 @@ public:
 	virtual void Render(const glm::mat4 &view, const glm::mat4 &projection);
 
 	void AddTexture(Ref<Texture> texture);
-	void SetModel(Ref<ModelInterface> model);
+	void SetModel(Ref<ModelBase> model);
 	void SetShader(Ref<Shader> shader);
 
 	void SetPosition(const glm::vec3 &position);
@@ -32,7 +32,7 @@ public:
 	bool HasModel() const;
 
 	Ref<Shader> GetShader() const;
-	Ref<ModelInterface> GetModel() const;
+	Ref<ModelBase> GetModel() const;
 
 	template <class _Type>
 	void SetUniform(const std::string &name, _Type value) {
@@ -42,7 +42,7 @@ public:
 protected:
 	std::vector<Ref<Texture>> _textures;
 	Ref<Shader> _shader;
-	Ref<ModelInterface> _model;
+	Ref<ModelBase> _model;
 	glm::vec3 _position = { 0, 0, 0 };
 	glm::vec3 _scale = { 1, 1, 1 };
 };

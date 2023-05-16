@@ -13,9 +13,7 @@ public:
 	virtual void OnEvent(Event &e);
 	virtual void OnUpdate();
 
-	virtual void Clear();
 	virtual void UpdateCamera();
-	virtual void Render();
 
 	Ref<Camera> GetCamera() const { return _camera; }
 	void SetCamera(Ref<Camera> camera) { _camera = camera; }

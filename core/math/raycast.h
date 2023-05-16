@@ -10,13 +10,11 @@ struct Ray {
 	glm::vec3 direction;
 };
 
-class Window;
-
 class Raycast {
 public:
-	Raycast(Ref<Window> w)
-		: _window(w) { }
+	Raycast(double width, double height);
 
+	Ray CreateFromScreenCentre(glm::vec3 origin);
 	Ray Create(glm::vec3 origin, float xpos, float ypos);
 	glm::vec3 GetDirection(float xpos, float ypos);
 
@@ -25,12 +23,14 @@ public:
 	glm::vec4 ToEyeCoords(glm::vec4 clip_coords);
 	glm::vec3 ToWorldCoords(glm::vec4 eye_coords);
 
-	void UpdateData(glm::mat4 view, glm::mat4 proj);
+	void UpdateMatrices(glm::mat4 view, glm::mat4 proj);
+	void UpdateWindowSize(double width, double height);
 
 protected:
-	Ref<Window> _window;
 	glm::mat4 _view;
 	glm::mat4 _proj;
+	double _width;
+	double _height;
 };
 
 } // namespace en61

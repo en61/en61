@@ -1,11 +1,18 @@
 #include <core/math/raycast.h>
 
-#include <core/base/window.h>
-
 namespace en61 {
+
+Ray Raycast::CreateFromScreenCentre(glm::vec3 origin) {
+	return Create(origin, _width / 2, _height / 2);
+}
 
 Ray Raycast::Create(glm::vec3 origin, float xpos, float ypos) {
 	return Ray{origin, GetDirection(xpos, ypos)};
+}
+
+Raycast::Raycast(double width, double height)
+	: _width(width), _height(height) {
+
 }
 
 glm::vec3 Raycast::GetDirection(float xpos, float ypos) {
@@ -29,8 +36,8 @@ glm::vec3 Raycast::GetDirection(float xpos, float ypos) {
 }
 
 glm::vec2 Raycast::ToNDS(glm::vec2 viewport_coords) {		 
-	float x = (2.f * viewport_coords.x) / _window->Width() - 1.f;
-	float y = (2.f * viewport_coords.y) / _window->Height() - 1.f;
+	float x = (2.f * viewport_coords.x) / _width - 1.f;
+	float y = (2.f * viewport_coords.y) / _height - 1.f;
 
 	return glm::vec2(x, -y);
 }
@@ -51,9 +58,14 @@ glm::vec3 Raycast::ToWorldCoords(glm::vec4 eye_coords) {
 	return inverted_view * eye_coords;
 }
 
-void Raycast::UpdateData(glm::mat4 view, glm::mat4 proj) {
+void Raycast::UpdateMatrices(glm::mat4 view, glm::mat4 proj) {
 	_view = view;
 	_proj = proj;
+}
+
+void Raycast::UpdateWindowSize(double width, double height) {
+	_width = width;
+	_height = height;
 }
 
 } // namespace en61

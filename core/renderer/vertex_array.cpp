@@ -5,7 +5,7 @@ namespace en61 {
 VertexArray::VertexArray()
 	: _id(0) {
 	glGenVertexArrays(1, &_id);
-    Bind();
+	Bind();
 }
 
 VertexArray::~VertexArray() {

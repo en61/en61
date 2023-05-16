@@ -1,10 +1,10 @@
-#pragma once
+#include <core/utils/random.h>
 
 #include <stdlib.h>
 
 namespace en61 {
 
-inline float RandomFloat() {
+float RandomFloat() {
 	return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 }
 

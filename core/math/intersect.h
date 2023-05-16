@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/math/raycast.h>
+
 #include <optional>
 
 namespace en61 {

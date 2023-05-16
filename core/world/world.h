@@ -1,14 +1,14 @@
 #pragma once
 
-#include <core/application.h>
+#include <core/base/scene.h>
 #include <core/renderer/camera.h>
 #include <core/math/raycast.h>
 
 namespace en61 {
 
-class Scene: public ApplicationSceneBase {
+class World: public Scene {
 public:
-	Scene(Ref<Window> window);
+	World(Ref<Window> window);
 
 	virtual void OnEvent(Event &e);
 	virtual void OnUpdate();
@@ -27,7 +27,6 @@ public:
 
 protected:
 	Ref<Camera> _camera;
-	Ref<Window> _window;
 	Ref<Raycast> _raycast;
 };
 

@@ -1,6 +1,6 @@
 #include <core/math/raycast.h>
 
-#include <core/controls.h>
+#include <core/base/window.h>
 
 namespace en61 {
 

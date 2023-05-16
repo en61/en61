@@ -3,6 +3,8 @@
 #include <core/math/intersect.h>
 #include <core/math/raycast.h>
 
+#include <vector>
+
 namespace en61 {
 
 class Collidable {

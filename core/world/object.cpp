@@ -1,4 +1,4 @@
-#include <core/scene/object.h>
+#include <core/world/object.h>
 
 #include <iostream>
 

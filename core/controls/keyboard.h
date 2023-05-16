@@ -2,6 +2,6 @@
 
 namespace en61 {
 
-void InitAPI();
+bool IsKeyPressed(int key);
 
 } // namespace en61

@@ -1,5 +1,4 @@
 #include <core/renderer/texture.h>
-#include <core/resource.h>
 
 #include <iostream>
 #include <cstring>

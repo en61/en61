@@ -1,8 +1,8 @@
-#include <core/application.h>
+#include <core/base/application.h>
 #include <core/renderer/camera.h>
-#include <core/scene/object.h>
-#include <core/scene/scene.h>
-#include <core/scene/crosshair.h>
+#include <core/world/object.h>
+#include <core/world/world.h>
+#include <core/world/crosshair.h>
 #include <core/math/collision.h>
 #include <core/event/event.h>
 #include <core/opengl.h>
@@ -115,14 +115,11 @@ public:
 };
 
 
-class SandboxScene: public Scene {
+class SandboxWorld: public World {
 public:
-	SandboxScene(Ref<Window> window): Scene(window) {
+	SandboxWorld(Ref<Window> window): World(window) {
 		_current_cube = MakeRef<Cube>(_cubeAssets);
 		_tree = MakeRef<Tree>(_treeAssets);
-	}
-
-	void LoadAssets() {
 	}
 
 	void OnKeyPressed(KeyPressedEvent &event) {
@@ -176,12 +173,12 @@ public:
 	}
 
 	void OnUpdate() override {
-		Scene::UpdateCamera();
+		World::UpdateCamera();
 		Scene::Clear();
 		UpdateOutlineState();
 
-		auto view = Scene::GetCamera()->GetViewMatrix();
-		auto proj = Scene::GetCamera()->GetProjectionMatrix();
+		auto view = World::GetCamera()->GetViewMatrix();
+		auto proj = World::GetCamera()->GetProjectionMatrix();
 
 		_surface.Render(view, proj);
 		_tree->Render(view, proj);
@@ -208,7 +205,7 @@ protected:
 class Sandbox: public Application {
 public:
 	Sandbox(const WindowProps &props): Application(props) {
-		SetMainScene(MakeRef<SandboxScene>(GetWindow()));
+		SetMainScene(MakeRef<SandboxWorld>(GetWindow()));
 	}
 
 	static auto Create(const WindowProps &props = {}) {

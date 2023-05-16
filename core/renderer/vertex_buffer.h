@@ -6,7 +6,6 @@
 
 namespace en61 {
 
-
 class VertexBuffer {
 public:
 	VertexBuffer(GLenum type = GL_ARRAY_BUFFER);

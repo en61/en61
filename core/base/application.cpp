@@ -1,8 +1,7 @@
-#include <core/application.h>
+#include <core/base/application.h>
 
 #include <core/renderer/api.h>
 #include <core/platform/system.h>
-#include <core/window.h>
 
 #include <cassert>
 #include <utility>
@@ -43,7 +42,7 @@ std::pair<int, int> Application::GetMonitorResolution() {
 	return std::make_pair(mode->width, mode->height);
 }
 
-void Application::SetMainScene(Ref<ApplicationSceneBase> scene) {
+void Application::SetMainScene(Ref<SceneBase> scene) {
 	_scene = scene;
 }
 

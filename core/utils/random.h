@@ -2,6 +2,6 @@
 
 namespace en61 {
 
-void InitAPI();
+float RandomFloat();
 
 } // namespace en61

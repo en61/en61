@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/opengl.h>
-#include <core/window.h>
+#include <core/common.h>
 
 namespace en61 {
 
@@ -9,6 +9,8 @@ struct Ray {
 	glm::vec3 origin;
 	glm::vec3 direction;
 };
+
+class Window;
 
 class Raycast {
 public:

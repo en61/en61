@@ -1,23 +1,17 @@
 #pragma once
 
 #include <core/opengl.h>
-#include <core/window.h>
-#include <core/resource.h>
+#include <core/base/scene.h>
+#include <core/base/window.h>
 
 namespace en61 {
-
-class ApplicationSceneBase {
-public:
-	virtual void OnUpdate() = 0;
-	virtual void OnEvent(Event &event) = 0;
-};
 
 class Application {
 public:
 	Application(const WindowProps &win_props = WindowProps());
 	virtual ~Application() = default;
    
-	void SetMainScene(Ref<ApplicationSceneBase> scene);
+	void SetMainScene(Ref<SceneBase> scene);
 
 	virtual void Run();
 
@@ -35,7 +29,7 @@ private:
 
 protected:
 	Ref<Window> _window;
-	Ref<ApplicationSceneBase> _scene;
+	Ref<SceneBase> _scene;
 
 	static Application *_instance;
 };

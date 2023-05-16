@@ -3,8 +3,8 @@
 #include <core/event/event.h>
 #include <core/event/mouse.h>
 #include <core/event/key.h>
-#include <core/controls.h>
-#include <core/window.h>
+#include <core/controls/keyboard.h>
+#include <core/base/window.h>
 #include <core/opengl.h>
 
 namespace en61 {

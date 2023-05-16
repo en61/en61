@@ -1,28 +1,21 @@
-#include <core/controls.h>
+#include <core/controls/mouse.h>
 
-#include <core/application.h>
+#include <core/base/application.h>
 
 namespace en61 {
 
 MousePosition MousePosition::Get() {
 	GLFWwindow *window = static_cast<GLFWwindow*>(Application::Get()->GetWindow()->NativeHandle());
 
-	double xpos, ypos;
-	glfwGetCursorPos(window, &xpos, &ypos);
-	return {xpos, ypos};
+	MousePosition pos;
+	glfwGetCursorPos(window, &pos.x, &pos.y);
+	return pos;
 }
 
 void MousePosition::Set(const MousePosition &pos) {
 	GLFWwindow *window = static_cast<GLFWwindow*>(Application::Get()->GetWindow()->NativeHandle());
 
 	glfwSetCursorPos(window, pos.x, pos.y);
-}
-
-
-bool IsKeyPressed(int key) {
-	GLFWwindow *window = static_cast<GLFWwindow*>(Application::Get()->GetWindow()->NativeHandle());
-	
-	return glfwGetKey(window, key) == GLFW_PRESS;
 }
 
 } // namespace en61

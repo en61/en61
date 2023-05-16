@@ -1,6 +1,4 @@
-#include <core/resource.h>
-
-#include <core/application.h>
+#include <core/utils/resource.h>
 
 namespace en61 {
 

@@ -1,7 +1,5 @@
 #include <core/renderer/shader.h>
 
-#include <core/resource.h>
-
 #include <fstream>
 #include <sstream>
 #include <iostream>

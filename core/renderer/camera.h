@@ -57,7 +57,7 @@ protected:
 	float _yaw = 90.0f;
 	float _pitch = 0.0f;
 
-	float _move_speed = 7.f;
+	float _move_speed = 15.f;
 	float _mouse_sensivity = 0.1f;
 	float _zoom = 45.f;
 	float _zoom_speed = 2.f;

@@ -13,15 +13,15 @@ using namespace en61;
 static AssetManager assets("../assets/");
 
 struct CubeAssets {
-	Asset<Shader> shader	   {assets, "cube.vert", "cube.frag"};
+	Asset<Shader> shader{assets, "cube.vert", "cube.frag"};
 	Asset<Shader> outlineShader{assets, "cube.vert", "cube.frag"};
-	Asset<Model> model		   {assets, "cube.obj"};
-	Asset<Texture> texture	   {assets, "blue_cube.png"};
+	Asset<Model> model{assets, "cube.obj"};
+	Asset<Texture> texture{assets, "blue_cube.png"};
 };
 
 struct TreeAssets {
 	Asset<Shader> shader{assets, "tree.vert", "tree.frag"};
-	Asset<Model> model	{assets, "tree.obj"};
+	Asset<Model> model{assets, "tree.obj"};
 };
 
 class Tree: public Object {

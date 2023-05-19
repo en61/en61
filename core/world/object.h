@@ -17,6 +17,7 @@ public:
 
 	void AddTexture(Ref<Texture> texture);
 	void SetModel(Ref<ModelBase> model);
+	void SetModel(Ref<Model> model);
 	void SetShader(Ref<Shader> shader);
 
 	void SetPosition(const glm::vec3 &position);

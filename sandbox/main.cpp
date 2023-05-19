@@ -3,43 +3,25 @@
 #include <core/world/object.h>
 #include <core/world/world.h>
 #include <core/world/crosshair.h>
+#include <core/world/assets.h>
 #include <core/math/collision.h>
 #include <core/event/event.h>
 #include <core/opengl.h>
 
 using namespace en61;
 
+static AssetManager assets("../assets/");
+
 struct CubeAssets {
-	Ref<Shader> shader, outlineShader;
-	Ref<Texture> texture;
-	Ref<Model> model;
-
-	CubeAssets() {
-		model = MakeRef<Model>();
-		texture = MakeRef<Texture>();
-
-		texture->Load("../assets/blue_cube.png");
-		model->Load("../assets/cube.obj");
-
-		shader = MakeRef<Shader>();
-		outlineShader = MakeRef<Shader>();
-
-		shader->Load("../assets/cube.vert", "../assets/cube.frag");
-		outlineShader->Load("../assets/cube_outline.vert", "../assets/cube_outline.frag");
-	}
+	Asset<Shader> shader	   {assets, "cube.vert", "cube.frag"};
+	Asset<Shader> outlineShader{assets, "cube.vert", "cube.frag"};
+	Asset<Model> model		   {assets, "cube.obj"};
+	Asset<Texture> texture	   {assets, "blue_cube.png"};
 };
 
 struct TreeAssets {
-	Ref<Shader> shader;
-	Ref<Model> model;
-
-	TreeAssets() {
-		shader = MakeRef<Shader>();
-		model = MakeRef<Model>();
-
-		shader->Load("../assets/tree.vert", "../assets/tree.frag");
-		model->Load("../assets/tree.obj");
-	}
+	Asset<Shader> shader{assets, "tree.vert", "tree.frag"};
+	Asset<Model> model	{assets, "tree.obj"};
 };
 
 class Tree: public Object {
@@ -212,7 +194,6 @@ public:
 		return MakeScoped<Sandbox>(props);
 	}
 };
-
 
 int main() {
 	auto app = Sandbox::Create({2560, 1440, "EN61"});

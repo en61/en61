@@ -47,6 +47,10 @@ void Object::SetModel(Ref<ModelBase> model) {
 	_model = model;
 }
 
+void Object::SetModel(Ref<Model> model) {
+	_model = model;
+}
+
 void Object::SetShader(Ref<Shader> shader) {
 	_shader = shader;
 }

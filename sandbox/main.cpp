@@ -24,6 +24,12 @@ struct TreeAssets {
 	Asset<Model> model{assets, "tree.obj"};
 };
 
+struct SurfaceAssets {
+	Asset<Shader> shader{assets, "surface.vert", "surface.frag"};
+	Asset<Model> model{assets, "surface.obj"};
+	Asset<Texture> texture{assets, "grass.png"};
+};
+
 class Tree: public Object {
 public:
 	Tree(TreeAssets assets): _assets(assets) {
@@ -44,12 +50,10 @@ public:
 	}
 
 	void EnableOutline() {
-		SetShader(_assets.outlineShader);
 		_outline = true;
 	}
 
 	void HideOutline() {
-		SetShader(_shader);
 		_outline = false;
 	}
 
@@ -79,17 +83,10 @@ protected:
 class Surface: public Object {
 public:
 	Surface() {
-		auto model = MakeRef<Model>();
-		auto shader = MakeRef<Shader>();
-		auto texture = MakeRef<Texture>();
-
-		shader->Load("../assets/surface.vert", "../assets/surface.frag");
-		model->Load("../assets/surface.obj");
-		texture->Load("../assets/grass.png");
-
-		SetModel(model);
-		SetShader(shader);
-		AddTexture(texture);
+		SurfaceAssets assets;
+		SetModel(assets.model);
+		SetShader(assets.shader);
+		AddTexture(assets.texture);
 	}
 };
 

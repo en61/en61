@@ -16,7 +16,7 @@ void Object::Render(const glm::mat4 &view, const glm::mat4 &projection) {
 }
 
 void Object::RenderOutline(const glm::mat4 &view, const glm::mat4 &projection) {
-	glLineWidth(5);
+	glLineWidth(7);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	Object::Render(view, projection);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

@@ -14,7 +14,7 @@ static AssetManager assets("../assets/");
 
 struct CubeAssets {
 	Asset<Shader> shader{assets, "cube.vert", "cube.frag"};
-	Asset<Shader> outlineShader{assets, "cube.vert", "cube.frag"};
+	Asset<Shader> outlineShader{assets, "cube_outline.vert", "cube_outline.frag"};
 	Asset<Model> model{assets, "cube.obj"};
 	Asset<Texture> texture{assets, "blue_cube.png"};
 };
@@ -62,14 +62,11 @@ public:
 
 	void Render(const glm::mat4 &view, const glm::mat4 &projection) override {
 		if (_outline) {
-			glLineWidth(5);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			SetShader(_assets.outlineShader);
-			Object::Render(view, projection);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			Object::RenderOutline(view, projection);
+			SetShader(_assets.shader);
 		}
 
-		SetShader(_assets.shader);
 		Object::Render(view, projection);
 	}
 

@@ -14,6 +14,7 @@ public:
 	Object() = default;
 
 	virtual void Render(const glm::mat4 &view, const glm::mat4 &projection);
+	virtual void RenderOutline(const glm::mat4 &view, const glm::mat4 &projection);
 
 	void AddTexture(Ref<Texture> texture);
 	void SetModel(Ref<ModelBase> model);

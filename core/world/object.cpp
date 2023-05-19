@@ -15,6 +15,13 @@ void Object::Render(const glm::mat4 &view, const glm::mat4 &projection) {
 	DrawModel();
 }
 
+void Object::RenderOutline(const glm::mat4 &view, const glm::mat4 &projection) {
+	glLineWidth(5);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	Object::Render(view, projection);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
 void Object::DrawTextures() {
 	for (size_t i = 0; i < _textures.size(); i++) {
 		_textures[i]->Bind(i);

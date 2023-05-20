@@ -21,7 +21,12 @@ struct CubeAssets {
 
 struct TreeAssets {
 	Asset<Shader> shader{assets, "tree.vert", "tree.frag"};
-	Asset<Model> model{assets, "tree.obj"};
+	Asset<Model> model{assets, "castle.obj"};
+};
+
+struct CastleAssets {
+	Asset<Shader> shader{assets, "castle.vert", "castle.frag"};
+	Asset<Model> model{assets, "castle.obj"};
 };
 
 struct SurfaceAssets {
@@ -39,6 +44,17 @@ public:
 
 protected:
 	TreeAssets _assets;
+};
+
+class Castle: public Object {
+public:
+	Castle(CastleAssets assets): _assets(assets) {
+		SetShader(assets.shader);
+		SetModel(assets.model);
+	}
+
+protected:
+	CastleAssets _assets;
 };
 
 class Cube: public Object, public Collidable {
@@ -95,7 +111,7 @@ class SandboxWorld: public World {
 public:
 	SandboxWorld(Ref<Window> window): World(window) {
 		_current_cube = MakeRef<Cube>(_cubeAssets);
-		_tree = MakeRef<Tree>(_treeAssets);
+		_castle = MakeRef<Castle>(_castleAssets);
 	}
 
 	void OnKeyPressed(KeyPressedEvent &event) {
@@ -157,7 +173,7 @@ public:
 		auto proj = World::GetCamera()->GetProjectionMatrix();
 
 		_surface.Render(view, proj);
-		_tree->Render(view, proj);
+		_castle->Render(view, proj);
 		_crosshair.Render(view, proj);
 
 		for (auto &cube: _cubes) {
@@ -174,8 +190,8 @@ protected:
 	Crosshair _crosshair;
 	Surface _surface;
 	CubeAssets _cubeAssets;
-	TreeAssets _treeAssets;
-	Ref<Tree> _tree;
+	CastleAssets _castleAssets;
+	Ref<Castle> _castle;
 };
 
 class Sandbox: public Application {

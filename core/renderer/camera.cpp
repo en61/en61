@@ -89,8 +89,8 @@ void Camera::updateCameraVectors() {
 }
 
 glm::mat4 Camera::GetProjectionMatrix() {
-	static constexpr float znear = 0.1f;
-	static constexpr float zfar = 100.f;
+	static constexpr float znear = 0.01f;
+	static constexpr float zfar = 1000.f;
 
 	return glm::perspective(glm::radians(_zoom), _ratio, znear, zfar);
 }

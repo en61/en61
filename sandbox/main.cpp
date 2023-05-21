@@ -88,12 +88,19 @@ public:
 			Object::RenderOutline(view, projection);
 			SetShader(_assets.shader);
 		}
-
+		
+		SetShader(_assets.shader);
+		SetUniform("cubeColor", _color);
 		Object::Render(view, projection);
+	}
+
+	void SetColor(glm::vec3 color) {
+		_color = color;
 	}
 
 protected:
 	CubeAssets _assets;
+	glm::vec3 _color;
 	bool _outline = false;
 };
 
@@ -136,6 +143,7 @@ public:
 		auto cubepos = ray.origin + ray.direction * 5.f;
 		
 		cube->SetPosition(cubepos);
+		cube->SetColor(_selectedColor);
 		_cubes.push_back(cube);
 	}
 
@@ -192,9 +200,23 @@ public:
 
 		}
 
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+		if (_currentItem == 0) {
+			ImGui::Text("Cube color selector");
+			ImGui::PushItemWidth(600);
+			ImGui::ColorPicker3("label", &_selectedColor.x);
+		}
+
+		ImGui::SliderFloat("camera speed", &GetCamera()->GetMoveSpeed(), 0, 30);
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+
 		ImGui::End();
 	}
-
 
 	void OnEvent(Event &e) override {
 		World::OnEvent(e);
@@ -246,6 +268,7 @@ protected:
 	TreeAssets _treeAssets;
 
 	int _currentItem = 0;
+	glm::vec3 _selectedColor;
 };
 
 class Sandbox: public Application {

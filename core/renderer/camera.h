@@ -37,6 +37,8 @@ public:
 	void SetPosition(glm::vec3 pos) { _position = pos; }
 	glm::vec3 GetPosition() const { return _position; }
 
+	float &GetMoveSpeed() { return _move_speed; }
+
 protected:
 	void updateCameraVectors();
 

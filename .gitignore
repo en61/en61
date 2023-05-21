@@ -3,3 +3,4 @@ sandbox/build/
 .cache/
 .git/
 .vscode/
+CMakeFiles/

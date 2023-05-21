@@ -19,7 +19,4 @@ set(IMGUI_INCLUDE_DIRS
 
 add_library(imgui STATIC ${IMGUI_SOURCES})
 
-find_package(OpenGL REQUIRED)
-
-target_link_libraries(imgui PUBLIC ${OPENGL_LIBRARIES})
 target_include_directories(imgui PUBLIC ${IMGUI_INCLUDE_DIRS})

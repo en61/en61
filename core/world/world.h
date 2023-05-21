@@ -10,10 +10,18 @@ class World: public Scene {
 public:
 	World(Ref<Window> window);
 
-	virtual void OnEvent(Event &e);
-	virtual void OnUpdate();
+	virtual void Render() override;
+	virtual void OnEvent(Event &e) override;
+	virtual void OnUpdate() override;
+
+	void OnKeyPressed(KeyPressedEvent &e);
 
 	virtual void UpdateCamera();
+	virtual void RenderMenu();
+
+	static void SetMenuFontScale(float scale);
+
+	void ToogleMenu();
 
 	Ref<Camera> GetCamera() const { return _camera; }
 	void SetCamera(Ref<Camera> camera) { _camera = camera; }
@@ -26,6 +34,7 @@ public:
 protected:
 	Ref<Camera> _camera;
 	Ref<Raycast> _raycast;
+	bool _menuOpen = false;
 };
 
 } // namespace en61

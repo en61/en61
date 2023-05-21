@@ -97,10 +97,6 @@ glm::mat4 Camera::GetProjectionMatrix() {
 
 
 void Camera::ProcessInput() {
-	
-	if (IsKeyPressed(GLFW_KEY_ESCAPE))
-		_window->Close();
-
 	if (IsKeyPressed(GLFW_KEY_W))
 		ProcessKeyboard(Forward, _delta_time);
 
@@ -123,10 +119,20 @@ void Camera::OnMouseScrolled(MouseScrolledEvent &event) {
 	ProcessMouseScroll(static_cast<float>(event.GetYOffset()));
 }
 
+void Camera::ResetMousePosition() {
+	_shouldResetMouse = true;	
+}
+
 void Camera::OnMouseMoved(MouseMovedEvent &event) {
 
 	float xpos = static_cast<float>(event.GetX());
 	float ypos = static_cast<float>(event.GetY());
+
+	if (_shouldResetMouse) {
+		_last_x = xpos;
+		_last_y = ypos;
+		_shouldResetMouse = false;
+	}
 
 	float xoffset = xpos - _last_x;
 	float yoffset = _last_y - ypos;

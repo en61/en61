@@ -11,8 +11,17 @@ Window::Window(const WindowProps &props) : _properties(props) {
 	}
 
 	//glfwSetInputMode(_handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	LockMouse();
 	glfwSetWindowUserPointer(_handle, this);
 	SetupCallbacks();
+}
+
+void Window::LockMouse() {
+	glfwSetInputMode(_handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void Window::UnlockMouse() {
+	glfwSetInputMode(_handle, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
 Window::~Window() {

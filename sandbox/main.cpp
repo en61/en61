@@ -9,8 +9,6 @@
 #include <core/opengl.h>
 
 #include <imgui/imgui.h>
-#include <imgui/backends/imgui_impl_glfw.h>
-#include <imgui/backends/imgui_impl_opengl3.h>
 
 using namespace en61;
 
@@ -25,7 +23,7 @@ struct CubeAssets {
 
 struct TreeAssets {
 	Asset<Shader> shader{assets, "tree.vert", "tree.frag"};
-	Asset<Model> model{assets, "castle.obj"};
+	Asset<Model> model{assets, "tree.obj"};
 };
 
 struct CastleAssets {
@@ -114,8 +112,6 @@ public:
 class SandboxWorld: public World {
 public:
 	SandboxWorld(Ref<Window> window): World(window) {
-		_current_cube = MakeRef<Cube>(_cubeAssets);
-		_castle = MakeRef<Castle>(_castleAssets);
 	}
 
 	void OnKeyPressed(KeyPressedEvent &event) {
@@ -128,20 +124,39 @@ public:
 	void OnMousePressed(MousePressedEvent &event) {
 		if (event.GetButtonCode() == GLFW_MOUSE_BUTTON_RIGHT) {
 			std::cout << "right mouse button pressed" << std::endl;
-			PlaceBlock();
+			if (_currentItem == 0) PlaceBlock();
+			if (_currentItem == 1) PlaceTree();
+			if (_currentItem == 2) PlaceCastle();
 		}
 	}
 
 	void PlaceBlock() {
-		if (_current_cube) {
-			auto ray = GetOrthogonalRay();
-			auto cubepos = ray.origin + ray.direction * 5.f;
-			
-			_current_cube->SetPosition(cubepos);
-			_cubes.push_back(_current_cube);
-		}
+		auto cube = MakeRef<Cube>(_cubeAssets);
+		auto ray = GetOrthogonalRay();
+		auto cubepos = ray.origin + ray.direction * 5.f;
 		
-		_current_cube = MakeRef<Cube>(_cubeAssets);
+		cube->SetPosition(cubepos);
+		_cubes.push_back(cube);
+	}
+
+	void PlaceCastle() {
+		if (!_castle)
+			_castle = MakeRef<Castle>(_castleAssets);
+		
+		auto ray = GetOrthogonalRay();
+		auto cubepos = ray.origin + ray.direction * 5.f;
+		cubepos.y = 0.f;
+		_castle->SetPosition(cubepos);
+	}
+
+	void PlaceTree() {
+		Tree tree(_treeAssets);
+		auto ray = GetOrthogonalRay();
+		auto cubepos = ray.origin + ray.direction * 5.f;
+		cubepos.y = 0.f;
+
+		tree.SetPosition(cubepos);
+		_trees.push_back(tree);
 	}
 
 	void UpdateOutlineState() {
@@ -159,13 +174,34 @@ public:
 			_target = newTarget;
 		}
 	}
+	
+	void RenderMenu() override {
+
+		ImGui::Begin("Sandbox");
+
+		static constexpr std::array<const char*, 3> names = {
+			"Block", "Tree", "Castle"
+		};
+
+		ImGui::Text("Selected Block: %s", names[_currentItem]);
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+		if (ImGui::ListBox("Choose item", &_currentItem, &names[0], names.size())) {
+
+		}
+
+		ImGui::End();
+	}
+
 
 	void OnEvent(Event &e) override {
+		World::OnEvent(e);
+
 		EventDispatcher ed(e);
 		ed.Handle<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressed));
 		ed.Handle<MousePressedEvent>(BIND_EVENT_FN(OnMousePressed));
-
-		_camera->OnEvent(e);
 	}
 
 	void OnUpdate() override {
@@ -177,44 +213,46 @@ public:
 		auto proj = World::GetCamera()->GetProjectionMatrix();
 
 		_surface.Render(view, proj);
-		_castle->Render(view, proj);
+
+		if (_castle)
+			_castle->Render(view, proj);
+
 		_crosshair.Render(view, proj);
+
+		for (auto &tree: _trees) {
+			tree.Render(view, proj);
+		}
 
 		for (auto &cube: _cubes) {
 			cube->Render(view, proj);
 		}
 
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
 
-		ImGui::NewFrame();
-
-		ImGui::Begin("Window");
-		ImGui::Text("Hello, world %d", 123);
-		ImGui::End();
-
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		Scene::Render();
-		
+		World::Render();
 	}
 
 protected:
+	// objects
 	std::vector<Ref<Cube>> _cubes;
+	std::vector<Tree> _trees;
 	std::optional<size_t> _target;
-	Ref<Cube> _current_cube;
+	Ref<Castle> _castle;
 	Crosshair _crosshair;
 	Surface _surface;
+
+	// assets
 	CubeAssets _cubeAssets;
 	CastleAssets _castleAssets;
-	Ref<Castle> _castle;
+	TreeAssets _treeAssets;
+
+	int _currentItem = 0;
 };
 
 class Sandbox: public Application {
 public:
 	Sandbox(const WindowProps &props): Application(props) {
 		SetMainScene(MakeRef<SandboxWorld>(GetWindow()));
+		World::SetMenuFontScale(2.0f);
 	}
 
 	static auto Create(const WindowProps &props = {}) {

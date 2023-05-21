@@ -28,6 +28,7 @@ public:
 	void ProcessKeyboard(Direction direction, float delta);
 	void ProcessMouseMovement(float xoffset, float yoffset, bool limit = true);
 	void ProcessMouseScroll(float yoffset);
+	void ResetMousePosition(); 
 
 	void OnEvent(Event &event);
 	void OnMouseScrolled(MouseScrolledEvent &event);
@@ -41,6 +42,7 @@ protected:
 
 protected:
 	Ref<Window> _window;
+	bool _shouldResetMouse = false;
 
 	float _last_x;
 	float _last_y;

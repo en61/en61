@@ -64,6 +64,7 @@ void Application::OnEvent(Event &event) {
 	if (_scene)
 		_scene->OnEvent(event);
 }
+
 void Application::OnUpdate() {
 	if (_scene)
 		_scene->OnUpdate();

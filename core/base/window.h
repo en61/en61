@@ -37,6 +37,9 @@ public:
 	bool ShouldClose();
 	void Close();
 
+	void LockMouse();
+	void UnlockMouse();
+
 	void ErrorCallback(int error, const char *description);
 	void SetEventCallback(EventCallbackFunc callback);
 

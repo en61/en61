@@ -26,6 +26,7 @@ A graphics engine written in c++.
 
 # Used libraries
 * [**assimp**](https://github.com/assimp/assimp)
+* [**imgui**](https://github.com/ocornut/imgui)
 * [**glfw3**](https://github.com/glfw/glfw)
 * [**glad**](https://github.com/Dav1dde/glad)
 * [**glm**](https://github.com/g-truc/glm)

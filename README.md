@@ -2,6 +2,12 @@
 
 A graphics engine written in c++.
 
+# Screenshots
+- Load 3D models of any common format
+![castle](screenshots/castle.png)
+- Raycasting & Collision detection
+![cubes](screenshots/cubes.png)
+
 # Compilation
 
 * Download sources:

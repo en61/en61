@@ -6,6 +6,10 @@
 #include <cassert>
 #include <utility>
 
+#include <imgui/imgui.h>
+#include <imgui/backends/imgui_impl_glfw.h>
+#include <imgui/backends/imgui_impl_opengl3.h>
+
 namespace en61 {
 
 Application *Application::_instance{nullptr}; 
@@ -21,8 +25,8 @@ Application::Application(const WindowProps &win_props) {
 		exit(EXIT_FAILURE);
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	_window = Window::Create(win_props);
@@ -35,6 +39,16 @@ Application::Application(const WindowProps &win_props) {
 	InitAPI();
 
 	_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+
+	ImGuiIO &io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(_window->NativeHandle(), true);
+	ImGui_ImplOpenGL3_Init("#version 330");
+
 }
 
 std::pair<int, int> Application::GetMonitorResolution() {

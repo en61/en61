@@ -8,6 +8,10 @@
 #include <core/event/event.h>
 #include <core/opengl.h>
 
+#include <imgui/imgui.h>
+#include <imgui/backends/imgui_impl_glfw.h>
+#include <imgui/backends/imgui_impl_opengl3.h>
+
 using namespace en61;
 
 static AssetManager assets("../assets/");
@@ -180,7 +184,20 @@ public:
 			cube->Render(view, proj);
 		}
 
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+
+		ImGui::NewFrame();
+
+		ImGui::Begin("Window");
+		ImGui::Text("Hello, world %d", 123);
+		ImGui::End();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 		Scene::Render();
+		
 	}
 
 protected:

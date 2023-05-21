@@ -10,7 +10,7 @@ Window::Window(const WindowProps &props) : _properties(props) {
 		exit(EXIT_FAILURE);
 	}
 
-	glfwSetInputMode(_handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(_handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetWindowUserPointer(_handle, this);
 	SetupCallbacks();
 }

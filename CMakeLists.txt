@@ -35,8 +35,8 @@ add_subdirectory(thirdparty/glad/)
 add_subdirectory(thirdparty/stb/)
 add_subdirectory(thirdparty/glm/)
 add_subdirectory(thirdparty/assimp/)
+add_subdirectory(thirdparty/imgui/)
 
-target_link_libraries(en61 glfw glad stb glm assimp)
+target_link_libraries(en61 glfw glad stb glm assimp imgui)
 
 target_include_directories(en61 PUBLIC ${EN61_INCLUDE_DIRS})
-

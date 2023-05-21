@@ -4,9 +4,9 @@ A graphics engine written in c++.
 
 # Screenshots
 - Load 3D models of any common format
-![castle](screenshots/castle.png)
+![castle](images/castle.png)
 - Raycasting & Collision detection
-![cubes](screenshots/cubes.png)
+![cubes](images/cubes.png)
 
 # Compilation
 

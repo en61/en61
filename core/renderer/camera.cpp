@@ -1,5 +1,7 @@
 #include <core/renderer/camera.h>
 
+#include <imgui/imgui.h>
+
 namespace en61 {
 
 void Camera::OnEvent(Event &event) {
@@ -32,6 +34,10 @@ void Camera::CalcFrameTime() {
 	float current = static_cast<float>(glfwGetTime());
 	_delta_time = current - _last_frame;
 	_last_frame = current;
+}
+
+void Camera::RenderSpeedSelector() {
+	ImGui::SliderFloat("camera speed", &_move_speed, 0, 30);
 }
 
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool limit) {

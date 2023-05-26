@@ -37,6 +37,11 @@ struct SurfaceAssets {
 	Asset<Texture> texture{assets, "surface/grass.png"};
 };
 
+struct SpaceshipAssets {
+	Asset<Shader> shader{assets, "spaceship.vs", "spaceship.fs"};
+	Asset<Model> model{assets, "spaceship/spaceship.obj"};
+};
+
 class Tree: public Object {
 public:
 	Tree(TreeAssets assets): _assets(assets) {
@@ -59,7 +64,31 @@ protected:
 	CastleAssets _assets;
 };
 
-class Cube: public Object, public Collidable {
+class Spaceship: public Object {
+public:
+	Spaceship(SpaceshipAssets assets): _assets(assets) {
+		SetShader(assets.shader);
+		SetModel(assets.model);
+	}
+
+	void Render(const glm::mat4 &view, const glm::mat4 &proj) override {
+		auto pos = GetPosition();
+		pos.z += _speed;
+		SetPosition(pos);
+		
+		Object::Render(view, proj);
+	}
+
+	void RenderSpeedSelector() {
+		ImGui::SliderFloat("spaceship speed", &_speed, 0.01f, 1.f);
+	}
+
+protected:
+	SpaceshipAssets _assets;
+	float _speed = 0.01f;
+};
+
+class Cube: public Object {
 public:
 	Cube(CubeAssets assets): _assets(assets) {
 		AddTexture(_assets.texture);
@@ -73,13 +102,6 @@ public:
 
 	void HideOutline() {
 		_outline = false;
-	}
-
-	AABB GetBox() const override {
-		auto model = GetModelMatrix();
-		auto min = glm::vec3(model * glm::vec4(-1, -1, -1, 1));
-		auto max = glm::vec3(model * glm::vec4(1, 1, 1, 1));
-		return { min, max };
 	}
 
 	void Render(const glm::mat4 &view, const glm::mat4 &projection) override {
@@ -96,6 +118,13 @@ public:
 
 	void SetColor(glm::vec3 color) {
 		_color = color;
+	}
+
+	operator AABB() {
+		auto model = GetModelMatrix();
+		auto min = glm::vec3(model * glm::vec4(-1, -1, -1, 1));
+		auto max = glm::vec3(model * glm::vec4(1, 1, 1, 1));
+		return { min, max };
 	}
 
 protected:
@@ -134,16 +163,17 @@ public:
 			if (_currentItem == 0) PlaceBlock();
 			if (_currentItem == 1) PlaceTree();
 			if (_currentItem == 2) PlaceCastle();
+			if (_currentItem == 3) PlaceSpaceship();
 		}
 	}
 
 	void PlaceBlock() {
-		auto cube = MakeRef<Cube>(_cubeAssets);
+		auto cube = Cube(_cubeAssets);
 		auto ray = GetOrthogonalRay();
 		auto cubepos = ray.origin + ray.direction * 5.f;
 		
-		cube->SetPosition(cubepos);
-		cube->SetColor(_selectedColor);
+		cube.SetPosition(cubepos);
+		cube.SetColor(_selectedColor);
 		_cubes.push_back(cube);
 	}
 
@@ -167,17 +197,27 @@ public:
 		_trees.push_back(tree);
 	}
 
+	void PlaceSpaceship() {
+		Spaceship spaceship(_spaceshipAssets);
+		if (!_spaceship)
+			_spaceship = MakeRef<Spaceship>(_spaceshipAssets);
+		
+		auto ray = GetOrthogonalRay();
+		auto cubepos = ray.origin + ray.direction * 5.f;
+		_spaceship->SetPosition(cubepos);
+	}
+
 	void UpdateOutlineState() {
 
-		std::vector<Ref<Collidable>> targets = { _cubes.begin(), _cubes.end() };
+		std::vector<AABB> targets = { _cubes.begin(), _cubes.end() };
 		auto newTarget = GetNearestCollisionTarget(targets, GetOrthogonalRay());
 
 		if (newTarget != _target) {
 			if (_target)
-				_cubes[_target.value()]->HideOutline();
+				_cubes[_target.value()].HideOutline();
 
 			if (newTarget)
-				_cubes[newTarget.value()]->EnableOutline();
+				_cubes[newTarget.value()].EnableOutline();
 
 			_target = newTarget;
 		}
@@ -187,8 +227,8 @@ public:
 
 		ImGui::Begin("Sandbox");
 
-		static constexpr std::array<const char*, 3> names = {
-			"Block", "Tree", "Castle"
+		static constexpr std::array<const char*, 4> names = {
+			"Block", "Tree", "Castle", "Spaceship"
 		};
 
 		ImGui::Text("Selected Block: %s", names[_currentItem]);
@@ -196,9 +236,7 @@ public:
 		ImGui::Spacing();
 		ImGui::Spacing();
 
-		if (ImGui::ListBox("Choose item", &_currentItem, &names[0], names.size())) {
-
-		}
+		ImGui::ListBox("Choose item", &_currentItem, &names[0], names.size());
 
 		ImGui::Spacing();
 		ImGui::Spacing();
@@ -209,10 +247,14 @@ public:
 			ImGui::ColorPicker3("label", &_selectedColor.x);
 		}
 
-		ImGui::SliderFloat("camera speed", &GetCamera()->GetMoveSpeed(), 0, 30);
+		GetCamera()->RenderSpeedSelector();
 
 		ImGui::Spacing();
 		ImGui::Spacing();
+
+		if (_currentItem == 3 && _spaceship) {
+			_spaceship->RenderSpeedSelector();
+		}
 
 
 		ImGui::End();
@@ -239,6 +281,9 @@ public:
 		if (_castle)
 			_castle->Render(view, proj);
 
+		if (_spaceship)
+			_spaceship->Render(view, proj);
+
 		_crosshair.Render(view, proj);
 
 		for (auto &tree: _trees) {
@@ -246,7 +291,7 @@ public:
 		}
 
 		for (auto &cube: _cubes) {
-			cube->Render(view, proj);
+			cube.Render(view, proj);
 		}
 
 
@@ -255,16 +300,18 @@ public:
 
 protected:
 	// objects
-	std::vector<Ref<Cube>> _cubes;
+	std::vector<Cube> _cubes;
 	std::vector<Tree> _trees;
 	std::optional<size_t> _target;
 	Ref<Castle> _castle;
+	Ref<Spaceship> _spaceship;
 	Crosshair _crosshair;
 	Surface _surface;
 
 	// assets
-	CubeAssets _cubeAssets;
+	SpaceshipAssets _spaceshipAssets;
 	CastleAssets _castleAssets;
+	CubeAssets _cubeAssets;
 	TreeAssets _treeAssets;
 
 	int _currentItem = 0;

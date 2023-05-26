@@ -3,15 +3,10 @@
 #include <core/math/intersect.h>
 #include <core/math/raycast.h>
 
-#include <vector>
+#include <span>
 
 namespace en61 {
 
-class Collidable {
-public:
-	virtual AABB GetBox() const = 0; 
-};
-
-std::optional<size_t> GetNearestCollisionTarget(std::vector<Ref<Collidable>> targets, Ray ray);
+std::optional<size_t> GetNearestCollisionTarget(std::span<AABB> targets, Ray ray);
 
 } // namespace en61

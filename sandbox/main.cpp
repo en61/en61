@@ -15,26 +15,26 @@ using namespace en61;
 static AssetManager assets("../assets/");
 
 struct CubeAssets {
-	Asset<Shader> shader{assets, "cube.vert", "cube.frag"};
-	Asset<Shader> outlineShader{assets, "cube_outline.vert", "cube_outline.frag"};
-	Asset<Model> model{assets, "cube.obj"};
-	Asset<Texture> texture{assets, "blue_cube.png"};
+	Asset<Shader> shader{assets, "cube.vs", "cube.fs"};
+	Asset<Shader> outlineShader{assets, "cube_outline.vs", "cube_outline.fs"};
+	Asset<Model> model{assets, "cube/cube.obj"};
+	Asset<Texture> texture{assets, "cube/blue_cube.png"};
 };
 
 struct TreeAssets {
-	Asset<Shader> shader{assets, "tree.vert", "tree.frag"};
-	Asset<Model> model{assets, "tree.obj"};
+	Asset<Shader> shader{assets, "tree.vs", "tree.fs"};
+	Asset<Model> model{assets, "tree/tree.obj"};
 };
 
 struct CastleAssets {
-	Asset<Shader> shader{assets, "castle.vert", "castle.frag"};
-	Asset<Model> model{assets, "castle.obj"};
+	Asset<Shader> shader{assets, "castle.vs", "castle.fs"};
+	Asset<Model> model{assets, "castle/castle.obj"};
 };
 
 struct SurfaceAssets {
-	Asset<Shader> shader{assets, "surface.vert", "surface.frag"};
-	Asset<Model> model{assets, "surface.obj"};
-	Asset<Texture> texture{assets, "grass.png"};
+	Asset<Shader> shader{assets, "surface.vs", "surface.fs"};
+	Asset<Model> model{assets, "surface/surface.obj"};
+	Asset<Texture> texture{assets, "surface/grass.png"};
 };
 
 class Tree: public Object {

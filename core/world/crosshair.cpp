@@ -24,7 +24,7 @@ Crosshair::Crosshair() {
 	auto shader = MakeRef<Shader>();
 	auto model = MakeRef<CrosshairModel>();
 
-	shader->Load("../../assets/crosshair.vert", "../../assets/crosshair.frag");
+	shader->Load("../../assets/crosshair.vs", "../../assets/crosshair.fs");
 
 	SetShader(shader);
 	SetModel(model);
